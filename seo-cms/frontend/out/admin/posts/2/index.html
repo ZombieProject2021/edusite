@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Редактирование поста - SEO-Master CMS</title>
+  <!-- Quill Visual Editor CSS -->
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #e0e7ff;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --warning: #f59e0b;
+      --warning-bg: #fffbeb;
+      --error: #ef4444;
+      --error-bg: #fef2f2;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      min-height: 100vh;
+    }
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 260px;
+      background: white;
+      border-right: 1px solid var(--gray-200);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      z-index: 40;
+    }
+    .sidebar-header {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .sidebar-header a {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .sidebar-nav { flex: 1; padding: 16px; overflow-y: auto; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: var(--gray-600);
+      text-decoration: none;
+      transition: all 0.2s;
+      margin-bottom: 4px;
+    }
+    .nav-item:hover { background: var(--gray-100); color: var(--gray-900); }
+    .nav-item.active { background: var(--primary-light); color: var(--primary); }
+    .nav-item svg { width: 20px; height: 20px; }
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid var(--gray-200);
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      border-radius: 8px;
+    }
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .user-name { font-weight: 500; font-size: 14px; }
+    .user-email { font-size: 12px; color: var(--gray-500); }
+    .main-content { flex: 1; margin-left: 260px; }
+    .header {
+      height: 64px;
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+    .page-content { padding: 24px 32px; }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .page-title { font-size: 24px; font-weight: 600; }
+    .page-subtitle { font-size: 14px; color: var(--gray-500); margin-top: 4px; }
+    .post-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-left: 12px;
+    }
+    .post-status.draft { background: var(--warning-bg); color: var(--warning); }
+    .post-status.published { background: var(--success-bg); color: var(--success); }
+    .actions { display: flex; gap: 12px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: #4338ca; }
+    .btn-secondary { background: var(--gray-100); color: var(--gray-700); }
+    .btn-secondary:hover { background: var(--gray-200); }
+    .btn-danger { background: #fef2f2; color: #dc2626; }
+    .btn-danger:hover { background: #fee2e2; }
+    .btn-gemini {
+      background: linear-gradient(135deg, #4285f4 0%, #9b72cb 100%);
+      color: white;
+    }
+    .btn-gemini:hover { opacity: 0.9; }
+    .btn-gemini:disabled { opacity: 0.5; cursor: not-allowed; }
+    .grid { display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--gray-200);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-header svg { width: 20px; height: 20px; color: var(--gray-500); }
+    .card-body { padding: 20px 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group:last-child { margin-bottom: 0; }
+    label { display: block; font-size: 14px; font-weight: 500; color: var(--gray-700); margin-bottom: 6px; }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-300);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s;
+      outline: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+    .helper-text { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--gray-200);
+      background: var(--gray-50);
+      overflow-x: auto;
+    }
+    .tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: transparent;
+      white-space: nowrap;
+    }
+    .tab:hover { background: var(--gray-200); }
+    .tab.active { background: var(--primary); color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .seo-score-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      position: relative;
+    }
+    .seo-score-circle::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 6px solid var(--gray-200);
+    }
+    .seo-score-circle::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 6px solid transparent;
+      border-top-color: var(--success);
+      border-right-color: var(--success);
+      transform: rotate(45deg);
+      clip-path: polygon(0 0, 100% 0, 100% 40%, 60% 40%, 60% 100%, 0 100%);
+    }
+    .seo-score-value { font-size: 24px; font-weight: 700; color: var(--gray-900); }
+    .seo-score-label { font-size: 11px; color: var(--gray-500); }
+    .checklist { margin-top: 16px; }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 12px;
+    }
+    .check-icon.success { background: var(--success-bg); color: var(--success); }
+    .check-icon.warning { background: var(--warning-bg); color: var(--warning); }
+    .check-icon.error { background: var(--error-bg); color: var(--error); }
+    .check-text { font-size: 13px; color: var(--gray-700); line-height: 1.4; }
+    .preview-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .preview-title {
+      font-size: 18px;
+      color: #1a0dab;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+    .preview-title:hover { text-decoration: underline; }
+    .preview-url { font-size: 14px; color: #006621; margin-bottom: 4px; }
+    .preview-desc { font-size: 14px; color: var(--gray-600); line-height: 1.4; }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .badge.success { background: var(--success-bg); color: var(--success); }
+    .badge.warning { background: var(--warning-bg); color: var(--warning); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--gray-100);
+      color: var(--gray-600);
+      border: 1px solid transparent;
+    }
+    .tag:hover { background: var(--primary-light); color: var(--primary); }
+    .tag.active { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+    .section-title { font-size: 14px; font-weight: 600; color: var(--gray-900); margin-bottom: 12px; }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 14px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: var(--gray-500); }
+    .info-value { color: var(--gray-900); font-weight: 500; }
+    .gemini-loading {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #4285f4 0%, #9b72cb 100%);
+      color: white;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .gemini-loading::after {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border: 2px solid transparent;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    /* Quill Editor Styles */
+    .ql-toolbar {
+      border-radius: 8px 8px 0 0;
+      border: 1px solid var(--gray-300) !important;
+    }
+    .ql-container {
+      border-radius: 0 0 8px 8px;
+      border: 1px solid var(--gray-300) !important;
+      border-top: none !important;
+      font-size: 14px;
+      min-height: 350px;
+    }
+    .ql-editor {
+      min-height: 350px;
+    }
+    .ql-editor.ql-blank::before {
+      font-style: normal;
+      color: var(--gray-400);
+    }
+    /* AI Suggestions Panel */
+    .ai-suggestions {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 1px solid #bae6fd;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    .ai-suggestions-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    .ai-suggestion-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .ai-suggestion-item:last-child { margin-bottom: 0; }
+    .ai-suggestion-label { color: var(--gray-600); }
+    .ai-suggestion-value { color: var(--gray-900); font-weight: 500; }
+    .ai-apply-btn {
+      padding: 4px 8px;
+      background: #0ea5e9;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .ai-apply-btn:hover { background: #0284c7; }
+    @media (max-width: 1200px) {
+      .grid { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="/admin/">SEO-Master CMS</a>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/admin/" class="nav-item">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          Дашборд
+        </a>
+        <a href="/admin/posts/" class="nav-item active">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Посты
+        </a>
+        <a href="/admin/media/" class="nav-item">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Медиа
+        </a>
+        <a href="/admin/seo/" class="nav-item">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          SEO
+        </a>
+        <a href="/admin/settings/" class="nav-item">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Настройки
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">А</div>
+          <div>
+            <div class="user-name">Администратор</div>
+            <div class="user-email">admin@seocms.ru</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="header"></header>
+
+      <div class="page-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">
+              Редактирование поста
+              <span class="post-status published" id="statusBadge">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Опубликовано
+              </span>
+            </h1>
+            <p class="page-subtitle">ID поста: <span id="postId">1</span> | Автор: <span id="postAuthor">Мария Иванова</span></p>
+          </div>
+          <div class="actions">
+            <button class="btn btn-secondary" onclick="saveDraft()">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+              Сохранить
+            </button>
+            <button class="btn btn-primary" onclick="publish()">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+              Обновить
+            </button>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="main-column">
+            <div class="card">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="title">Заголовок статьи</label>
+                  <input type="text" id="title" name="title" placeholder="Введите заголовок статьи..." oninput="updateSlug(); analyzeSeo(); generateAiSuggestions();" value="Как выбрать ключевые слова для сайта">
+                  <p class="helper-text">✨ Заголовок автоматически преобразуется в URL (slug)</p>
+                </div>
+                <div class="form-group">
+                  <label for="slug">URL (slug)</label>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="slug" name="slug" placeholder="url-statyi-dlya-seo" oninput="analyzeSeo();" value="kak-vybrat-klyuchevye-slova-dlya-saita">
+                    <button class="btn btn-secondary" onclick="regenerateSlug()" title="Перегенерировать slug">
+                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    </button>
+                  </div>
+                  <p class="helper-text">Человекопонятный URL с автоматической транслитерацией</p>
+                </div>
+                <div class="form-group">
+                  <label for="excerpt">Краткое описание (excerpt)</label>
+                  <textarea id="excerpt" name="excerpt" placeholder="Введите краткое описание статьи..." rows="3" oninput="analyzeSeo()">Узнайте, как правильно подбирать ключевые слова для вашего сайта. Полное руководство по keyword research для начинающих.</textarea>
+                </div>
+                <div class="form-group">
+                  <label>Содержимое статьи (визуальный редактор)</label>
+                  <div id="editor"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+              <div class="tabs">
+                <button class="tab active" onclick="showTab('basic')">Основное</button>
+                <button class="tab" onclick="showTab('seo')">SEO</button>
+                <button class="tab" onclick="showTab('social')">Соцсети</button>
+                <button class="tab" onclick="showTab('advanced')">Дополнительно</button>
+              </div>
+
+              <div id="tab-basic" class="tab-content active">
+                <div class="card-body">
+                  <div class="grid-2">
+                    <div class="form-group">
+                      <label for="category">Категория</label>
+                      <select id="category">
+                        <option value="">Выберите категорию</option>
+                        <option value="1">SEO</option>
+                        <option value="2" selected>Ключевые слова</option>
+                        <option value="3">Технический SEO</option>
+                        <option value="4">Контент</option>
+                        <option value="5">Внешний SEO</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Теги</label>
+                      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+                        <span class="tag active" onclick="toggleTag(this)">ключевые слова</span>
+                        <span class="tag active" onclick="toggleTag(this)">seo</span>
+                        <span class="tag" onclick="toggleTag(this)">оптимизация</span>
+                        <span class="tag" onclick="toggleTag(this)">трафик</span>
+                        <span class="tag" onclick="toggleTag(this)">инструменты</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-top: 20px;">
+                    <label for="status">Статус</label>
+                    <select id="status">
+                      <option value="draft">Черновик</option>
+                      <option value="published" selected>Опубликовано</option>
+                      <option value="archived">Архив</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div id="tab-seo" class="tab-content">
+                <div class="card-body">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <label style="margin: 0;">SEO-метаданные</label>
+                    <button class="btn btn-gemini" id="generateSeoBtn" onclick="generateSeoWithGemini()">
+                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                      ✨ AI (Gemini)
+                    </button>
+                  </div>
+                  <div class="form-group">
+                    <label for="metaTitle">Meta Title</label>
+                    <input type="text" id="metaTitle" name="metaTitle" placeholder="SEO оптимизация: полное руководство" oninput="analyzeSeo();" value="Как выбрать ключевые слова для сайта: полное руководство 2024">
+                    <p class="helper-text"><span id="titleLength">63</span>/60 символов | Рекомендуется 50-60 символов</p>
+                  </div>
+                  <div class="form-group">
+                    <label for="metaDesc">Meta Description</label>
+                    <textarea id="metaDesc" name="metaDescription" placeholder="Подробное описание вашей статьи для поисковых систем..." rows="3" oninput="analyzeSeo()">Узнайте, как правильно подбирать ключевые слова для вашего сайта. Полное руководство по keyword research с примерами и инструментами.</textarea>
+                    <p class="helper-text"><span id="descLength">126</span>/160 символов | Рекомендуется 140-155 символов</p>
+                  </div>
+                  <div class="form-group">
+                    <label for="keywords">Meta Keywords</label>
+                    <input type="text" id="keywords" name="keywords" placeholder="seo, оптимизация, продвижение" value="ключевые слова, seo, подбор слов, keyword research, трафик">
+                    <p class="helper-text">Ключевые слова через запятую</p>
+                  </div>
+                  
+                  <!-- AI Suggestions Panel -->
+                  <div id="aiSuggestions" class="ai-suggestions" style="display: none;">
+                    <div class="ai-suggestions-title">
+                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                      Рекомендации от AI
+                    </div>
+                    <div id="suggestionsList"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="tab-social" class="tab-content">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="ogTitle">Open Graph Title</label>
+                    <input type="text" id="ogTitle" placeholder="Заголовок для соцсетей" value="Как выбрать ключевые слова для сайта">
+                  </div>
+                  <div class="form-group">
+                    <label for="ogDesc">Open Graph Description</label>
+                    <textarea id="ogDesc" placeholder="Описание для превью в социальных сетях..." rows="3">Полное руководство по подбору ключевых слов для сайта. Узнайте методы исследования и лучшие инструменты.</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="ogImage">Open Graph Image URL</label>
+                    <input type="text" id="ogImage" placeholder="/uploads/image.jpg" value="/uploads/keyword-research.jpg">
+                  </div>
+                </div>
+              </div>
+
+              <div id="tab-advanced" class="tab-content">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="canonical">Canonical URL</label>
+                    <input type="text" id="canonical" placeholder="https://example.com/original">
+                  </div>
+                  <div class="form-group">
+                    <label for="schema">Schema.org Type</label>
+                    <select id="schema">
+                      <option value="Article" selected>Article</option>
+                      <option value="BlogPosting">BlogPosting</option>
+                      <option value="NewsArticle">NewsArticle</option>
+                      <option value="TechArticle">TechArticle</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                      <input type="checkbox" id="noindex">
+                      <span>noindex (не индексировать поисковиками)</span>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                      <input type="checkbox" id="nofollow">
+                      <span>nofollow (не следовать по ссылкам)</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-column">
+            <div class="card seo-analysis-panel" style="position: sticky; top: 88px;">
+              <div class="card-header">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                SEO Анализ в реальном времени
+              </div>
+              <div class="card-body">
+                <div class="seo-score-circle">
+                  <span class="seo-score-value" id="seoScore">85</span>
+                  <span class="seo-score-label">Score</span>
+                </div>
+                <div style="text-align: center; margin-bottom: 16px;">
+                  <span class="badge success" id="seoGrade">Grade: A</span>
+                </div>
+                <div class="checklist" id="checklist">
+                  <div class="check-item">
+                    <div class="check-icon success">✓</div>
+                    <span class="check-text">Заголовок имеет оптимальную длину (63 символов)</span>
+                  </div>
+                  <div class="check-item">
+                    <div class="check-icon success">✓</div>
+                    <span class="check-text">Мета-описание имеет оптимальную длину (126 символов)</span>
+                  </div>
+                  <div class="check-item">
+                    <div class="check-icon success">✓</div>
+                    <span class="check-text">Достаточный объём контента (167 слов)</span>
+                  </div>
+                  <div class="check-item">
+                    <div class="check-icon success">✓</div>
+                    <span class="check-text">URL корректный и человекопонятный</span>
+                  </div>
+                  <div class="check-item">
+                    <div class="check-icon warning">!</div>
+                    <span class="check-text">Заголовок немного длиннее рекомендации (63/60)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+              <div class="card-header">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                Google Preview
+              </div>
+              <div class="card-body">
+                <div class="preview-card">
+                  <div class="preview-title" id="previewTitle">Как выбрать ключевые слова для сайта: полное руководство 2024</div>
+                  <div class="preview-url">https://example.com/kak-vybrat-klyuchevye-slova-dlya-saita</div>
+                  <div class="preview-desc" id="previewDesc">Узнайте, как правильно подбирать ключевые слова для вашего сайта. Полное руководство по keyword research с примерами и инструментами.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+              <div class="card-header">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                Информация
+              </div>
+              <div class="card-body">
+                <div class="info-row">
+                  <span class="info-label">Создан</span>
+                  <span class="info-value">14 янв 2024, 14:30</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Обновлён</span>
+                  <span class="info-value">15 янв 2024, 10:15</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Просмотры</span>
+                  <span class="info-value">890</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Слов</span>
+                  <span class="info-value">167</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+              <div class="card-header" style="color: #dc2626;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                Опасная зона
+              </div>
+              <div class="card-body">
+                <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 12px;">Это действие нельзя отменить.</p>
+                <button class="btn btn-danger" style="width: 100%;" onclick="deletePost()">
+                  Удалить пост
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Quill JS -->
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+  <script>
+    // Initialize Quill Visual Editor
+    var quill = new Quill('#editor', {
+      theme: 'snow',
+      placeholder: 'Начните писать вашу статью здесь...',
+      modules: {
+        toolbar: [
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'indent': '-1'}, { 'indent': '+1' }],
+          [{ 'align': [] }],
+          ['link', 'image', 'video'],
+          ['blockquote', 'code-block'],
+          ['clean']
+        ]
+      }
+    });
+
+    // Set initial content
+    quill.root.innerHTML = `# Как выбрать ключевые слова для сайта
+
+Выбор правильных ключевых слов — это фундамент успешного SEO. В этом руководстве мы разберём все аспекты подбора эффективных ключевых слов для вашего сайта.
+
+## Что такое ключевые слова?
+
+Ключевые слова — это фразы, которые пользователи вводят в поисковые системы. Правильный подбор ключевых слов помогает привлечь целевую аудиторию и улучшить позиции в поиске.
+
+## Методы подбора ключевых слов
+
+### 1. Анализ конкурентов
+Изучите, какие ключевые слова используют ваши конкуренты. Это даст вам представление о работающих стратегиях.
+
+### 2. Использование инструментов
+Сервисы вроде SEMrush, Ahrefs и Google Keyword Planner помогут найти популярные запросы.
+
+### 3. Анализ поисковых подсказок
+Google предлагает подсказки при вводе запроса — используйте их для идей.
+
+## Как оценить качество ключевого слова
+
+При выборе ключевого слова обратите внимание на:
+- **Поисковый объём** — сколько людей ищут эту фразу
+- **Конкуренция** — насколько сложно занять позиции
+- **Релевантность** — соответствует ли запросу ваш контент
+- **Коммерческий интерес** — готова ли аудитория к покупке
+
+## Заключение
+
+Правильный подбор ключевых слов требует времени и анализа, но результат стоит усилий. Начните с базового исследования и постепенно расширяйте семантическое ядро.`;
+
+    // Update content analysis when editor changes
+    quill.on('text-change', function() {
+      analyzeSeo();
+    });
+
+    // Gemini API Configuration
+    const GEMINI_API_KEY = 'AIzaSyAVsL_6kpT8lNHi5jJXmtMsV0GnYEEsgws';
+    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
+
+    // Auto-generate slug from title
+    function updateSlug() {
+      const title = document.getElementById('title').value;
+      const slugInput = document.getElementById('slug');
+      
+      if (!slugInput.dataset.manual) {
+        const slug = generateSlug(title);
+        slugInput.value = slug;
+      }
+      
+      updatePreview();
+    }
+
+    // Generate SEO-friendly slug with transliteration
+    function generateSlug(text) {
+      if (!text) return '';
+      
+      // Transliterate Russian to Latin
+      const transliteration = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh',
+        'з': 'z', 'и': 'i', 'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o',
+        'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'c',
+        'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya',
+        'А': 'a', 'Б': 'b', 'В': 'v', 'Г': 'g', 'Д': 'd', 'Е': 'e', 'Ё': 'yo', 'Ж': 'zh',
+        'З': 'z', 'И': 'i', 'Й': 'j', 'К': 'k', 'Л': 'l', 'М': 'm', 'Н': 'n', 'О': 'o',
+        'П': 'p', 'Р': 'r', 'С': 's', 'Т': 't', 'У': 'u', 'Ф': 'f', 'Х': 'h', 'Ц': 'c',
+        'Ч': 'ch', 'Ш': 'sh', 'Щ': 'sch', 'Ъ': '', 'Ы': 'y', 'Ь': '', 'Э': 'e', 'Ю': 'yu', 'Я': 'ya',
+        ' ': '-', '_': '-', '.': '', ',': '', '!': '', '?': '', '"': '', "'": ''
+      };
+      
+      let result = text.split('').map(char => transliteration[char] || char).join('');
+      
+      result = result.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim();
+      
+      return result;
+    }
+
+    // Regenerate slug manually
+    function regenerateSlug() {
+      const title = document.getElementById('title').value;
+      const slugInput = document.getElementById('slug');
+      slugInput.dataset.manual = 'false';
+      
+      if (title) {
+        const slug = generateSlug(title);
+        slugInput.value = slug;
+        analyzeSeo();
+        alert('Slug перегенерирован!');
+      } else {
+        alert('Сначала введите заголовок статьи!');
+      }
+    }
+
+    // Toggle manual slug edit
+    document.getElementById('slug').addEventListener('input', function() {
+      this.dataset.manual = 'true';
+      updatePreview();
+    });
+
+    // Toggle tags
+    function toggleTag(el) {
+      el.classList.toggle('active');
+    }
+
+    // Tab switching
+    function showTab(tabName) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+    }
+
+    // Update preview
+    function updatePreview() {
+      const title = document.getElementById('metaTitle').value || document.getElementById('title').value || 'Заголовок страницы';
+      const slug = document.getElementById('slug').value || 'url-statii';
+      const desc = document.getElementById('metaDesc').value || document.getElementById('excerpt').value || 'Добавьте мета-описание для лучшего отображения в поисковых системах';
+      
+      document.getElementById('previewTitle').textContent = title;
+      document.getElementById('previewSlug').textContent = slug;
+      document.getElementById('previewDesc').textContent = desc.substring(0, 160);
+    }
+
+    // Generate AI Suggestions (debounced)
+    let aiTimeout;
+    function generateAiSuggestions() {
+      clearTimeout(aiTimeout);
+      aiTimeout = setTimeout(() => {
+        const title = document.getElementById('title').value;
+        if (title && title.length > 10) {
+          showAiSuggestions(title);
+        }
+      }, 2000);
+    }
+
+    function showAiSuggestions(title) {
+      const suggestions = [
+        { label: 'suggested-slug', value: generateSlug(title), field: 'slug' },
+        { label: 'suggested-title', value: title.substring(0, 55) + ' | SEO Guide', field: 'metaTitle' },
+      ];
+      
+      const suggestionsPanel = document.getElementById('aiSuggestions');
+      const suggestionsList = document.getElementById('suggestionsList');
+      
+      suggestionsPanel.style.display = 'block';
+      suggestionsList.innerHTML = suggestions.map(s => `
+        <div class="ai-suggestion-item">
+          <span class="ai-suggestion-label">${s.label}</span>
+          <span class="ai-suggestion-value">${s.value}</span>
+          <button class="ai-apply-btn" onclick="applySuggestion('${s.field}', '${s.value}')">Применить</button>
+        </div>
+      `).join('');
+    }
+
+    function applySuggestion(field, value) {
+      document.getElementById(field).value = value;
+      if (field === 'slug') {
+        document.getElementById('slug').dataset.manual = 'true';
+      }
+      analyzeSeo();
+      alert('Применено!');
+    }
+
+    // Generate SEO with Gemini AI
+    async function generateSeoWithGemini() {
+      const title = document.getElementById('title').value;
+      const content = quill.getText();
+      const excerpt = document.getElementById('excerpt').value;
+      
+      if (!title) {
+        alert('Сначала введите заголовок статьи!');
+        return;
+      }
+
+      const btn = document.getElementById('generateSeoBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span class="gemini-loading"></span> AI анализирует...';
+      btn.disabled = true;
+
+      try {
+        const prompt = `Ты SEO-эксперт. Проанализируй следующую статью и сгенерируй оптимальные SEO-метаданные:
+
+Заголовок: ${title}
+Краткое описание: ${excerpt || 'Нет'}
+Контент (первые 500 символов): ${content.substring(0, 500)}
+
+Твоя задача - вернуть ТОЛЬКО JSON объект в следующем формате (без markdown разметки):
+{
+  "metaTitle": "оптимальный заголовок (50-60 символов)",
+  "metaDescription": "оптимальное описание (140-155 символов)",
+  "keywords": "3-5 ключевых слов через запятую",
+  "ogTitle": "заголовок для соцсетей",
+  "ogDescription": "описание для соцсетей",
+  "suggestions": ["совет 1", "совет 2", "совет 3"]
+}`;
+
+        const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{ text: prompt }]
+            }]
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('API request failed');
+        }
+
+        const data = await response.json();
+        
+        if (data.candidates && data.candidates.length > 0) {
+          let aiResponse = data.candidates[0].content.parts[0].text;
+          
+          // Clean up markdown formatting
+          aiResponse = aiResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+          
+          try {
+            const seoData = JSON.parse(aiResponse);
+            
+            // Apply suggestions
+            if (seoData.metaTitle) {
+              document.getElementById('metaTitle').value = seoData.metaTitle;
+            }
+            if (seoData.metaDescription) {
+              document.getElementById('metaDesc').value = seoData.metaDescription;
+            }
+            if (seoData.keywords) {
+              document.getElementById('keywords').value = seoData.keywords;
+            }
+            if (seoData.ogTitle) {
+              document.getElementById('ogTitle').value = seoData.ogTitle;
+            }
+            if (seoData.ogDescription) {
+              document.getElementById('ogDesc').value = seoData.ogDescription;
+            }
+            
+            // Show additional suggestions
+            if (seoData.suggestions && seoData.suggestions.length > 0) {
+              const suggestionsPanel = document.getElementById('aiSuggestions');
+              const suggestionsList = document.getElementById('suggestionsList');
+              suggestionsPanel.style.display = 'block';
+              suggestionsList.innerHTML = seoData.suggestions.map(s => `
+                <div class="ai-suggestion-item">
+                  <span class="ai-suggestion-label">💡</span>
+                  <span class="ai-suggestion-value">${s}</span>
+                </div>
+              `).join('');
+            }
+            
+            analyzeSeo();
+            alert('✨ SEO-данные успешно сгенерированы с помощью AI!');
+            
+          } catch (parseError) {
+            console.error('Parse error:', parseError);
+            alert('Ошибка при обработке ответа AI. Попробуйте еще раз.');
+          }
+        }
+        
+      } catch (error) {
+        console.error('Gemini API Error:', error);
+        alert('Ошибка при генерации SEO: ' + error.message);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    // SEO Analysis
+    function analyzeSeo() {
+      const title = document.getElementById('metaTitle').value || document.getElementById('title').value;
+      const desc = document.getElementById('metaDesc').value || document.getElementById('excerpt').value;
+      const content = quill.getText();
+      const slug = document.getElementById('slug').value;
+      
+      // Update counters
+      document.getElementById('titleLength').textContent = (document.getElementById('metaTitle').value || title || '').length;
+      document.getElementById('descLength').textContent = (desc || '').length;
+      
+      const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+      const wordBadge = document.getElementById('wordCount');
+      if(wordBadge) {
+        wordBadge.textContent = wordCount;
+        wordBadge.className = 'badge ' + (wordCount >= 300 ? 'success' : wordCount >= 100 ? 'warning' : '');
+      }
+      
+      const charCount = document.getElementById('charCount');
+      if(charCount) charCount.textContent = content.length;
+
+      updatePreview();
+
+      // Analysis
+      let score = 0;
+      const checks = [];
+
+      // Title checks
+      const titleLen = (title || '').length;
+      if (titleLen === 0) {
+        checks.push({ type: 'error', text: 'Отсутствует заголовок страницы (title)' });
+      } else if (titleLen < 30) {
+        checks.push({ type: 'warning', text: 'Заголовок слишком короткий (рекомендуется 30-60 символов)' });
+        score += 10;
+      } else if (titleLen > 60) {
+        checks.push({ type: 'warning', text: 'Заголовок слишком длинный (рекомендуется не более 60 символов)' });
+        score += 15;
+      } else {
+        checks.push({ type: 'success', text: `Заголовок имеет оптимальную длину (${titleLen} символов)` });
+        score += 20;
+      }
+
+      // Description checks
+      const descLen = (desc || '').length;
+      if (descLen === 0) {
+        checks.push({ type: 'error', text: 'Отсутствует мета-описание (description)' });
+      } else if (descLen < 120) {
+        checks.push({ type: 'warning', text: 'Мета-описание коротковато (рекомендуется 120-160 символов)' });
+        score += 10;
+      } else if (descLen > 160) {
+        checks.push({ type: 'warning', text: 'Мета-описание слишком длинное (рекомендуется не более 160 символов)' });
+        score += 15;
+      } else {
+        checks.push({ type: 'success', text: `Мета-описание имеет оптимальную длину (${descLen} символов)` });
+        score += 20;
+      }
+
+      // Content checks
+      if (wordCount === 0) {
+        checks.push({ type: 'error', text: 'Добавьте контент для анализа' });
+      } else if (wordCount < 300) {
+        checks.push({ type: 'error', text: 'Слишком мало контента (менее 300 слов)' });
+        score += 10;
+      } else if (wordCount < 600) {
+        checks.push({ type: 'warning', text: 'Контент среднего размера (рекомендуется 600+ слов)' });
+        score += 15;
+      } else {
+        checks.push({ type: 'success', text: `Достаточный объём контента (${wordCount} слов)` });
+        score += 25;
+      }
+
+      // Slug checks
+      if (!slug) {
+        checks.push({ type: 'warning', text: 'URL будет сгенерирован автоматически' });
+        score += 5;
+      } else if (!/^[a-z0-9-]+$/.test(slug)) {
+        checks.push({ type: 'error', text: 'Некорректный URL (используйте только латиницу, цифры и дефис)' });
+      } else {
+        checks.push({ type: 'success', text: 'URL корректный и человекопонятный' });
+        score += 10;
+      }
+
+      // Update UI
+      const seoScore = document.getElementById('seoScore');
+      const seoGrade = document.getElementById('seoGrade');
+      const checklist = document.getElementById('checklist');
+      
+      if (seoScore) {
+        seoScore.textContent = Math.min(score, 100);
+      }
+      
+      let grade, gradeClass;
+      if (score >= 80) { grade = 'A'; gradeClass = 'success'; }
+      else if (score >= 60) { grade = 'B'; gradeClass = 'success'; }
+      else if (score >= 40) { grade = 'C'; gradeClass = 'warning'; }
+      else { grade = 'D'; gradeClass = 'error'; }
+      
+      if (seoGrade) {
+        seoGrade.textContent = 'Grade: ' + grade;
+        seoGrade.className = 'badge ' + gradeClass;
+      }
+
+      if (checklist) {
+        checklist.innerHTML = checks.map(c => `
+          <div class="check-item">
+            <div class="check-icon ${c.type}">${c.type === 'success' ? '✓' : c.type === 'warning' ? '!' : '✕'}</div>
+            <span class="check-text">${c.text}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Save functions
+    function saveDraft() {
+      document.getElementById('status').value = 'draft';
+      updateStatusBadge();
+      alert('Изменения сохранены в черновик!');
+    }
+
+    function publish() {
+      document.getElementById('status').value = 'published';
+      updateStatusBadge();
+      alert('Пост успешно обновлён!');
+    }
+
+    function updateStatusBadge() {
+      const status = document.getElementById('status').value;
+      const badge = document.getElementById('statusBadge');
+      if (status === 'published') {
+        badge.className = 'post-status published';
+        badge.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Опубликовано';
+      } else {
+        badge.className = 'post-status draft';
+        badge.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Черновик';
+      }
+    }
+
+    // Status change listener
+    document.getElementById('status').addEventListener('change', updateStatusBadge);
+
+    function deletePost() {
+      if (confirm('Вы уверены, что хотите удалить этот пост? Это действие нельзя отменить.')) {
+        alert('Пост удалён! Перенаправление на список постов...');
+        window.location.href = '/admin/posts/';
+      }
+    }
+
+    // Initial analysis
+    analyzeSeo();
+  </script>
+</body>
+</html>

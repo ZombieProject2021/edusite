@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пожарная безопасность — Учебный центр "ПРОФОБУЧЕНИЕ"</title>
+  <meta name="description" content="Обучение пожарно-техническому минимуму в Москве. Курсы для ответственных за пожарную безопасность. Выдаём удостоверения.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #0F4C81;
+      --primary-light: #1a6fb8;
+      --accent: #E74C3C;
+      --bg-light: #F8FAFC;
+      --bg-dark: #0F172A;
+      --text-dark: #1E293B;
+      --text-gray: #64748B;
+      --text-light: #94A3B8;
+      --border: #E2E8F0;
+      --white: #FFFFFF;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+    h1, h2, h3 { font-family: 'Manrope', sans-serif; font-weight: 700; line-height: 1.2; }
+    header { background: var(--white); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
+    .header-top { background: var(--primary); color: var(--white); padding: 8px 0; font-size: 13px; }
+    .header-top .container { display: flex; justify-content: space-between; align-items: center; }
+    .header-contacts { display: flex; gap: 24px; }
+    .header-contacts a { color: var(--white); text-decoration: none; opacity: 0.9; }
+    .header-main { padding: 16px 0; }
+    .header-main .container { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .logo-icon svg { width: 28px; height: 28px; color: var(--white); }
+    .logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 20px; color: var(--primary); }
+    .logo-text span { color: var(--accent); }
+    nav { display: flex; gap: 8px; }
+    nav a { padding: 10px 16px; color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 14px; border-radius: 8px; transition: all 0.2s; }
+    nav a:hover { background: var(--bg-light); color: var(--primary); }
+    nav a.active { background: var(--primary); color: var(--white); }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-primary { background: var(--accent); color: var(--white); }
+    .btn-sm { padding: 8px 16px; font-size: 13px; }
+    .hero { background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%); padding: 60px 0; color: var(--white); }
+    .hero h1 { font-size: 40px; margin-bottom: 16px; }
+    .hero p { font-size: 18px; opacity: 0.9; max-width: 600px; }
+    .breadcrumbs { background: var(--white); padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .breadcrumbs-list { display: flex; gap: 8px; font-size: 14px; list-style: none; }
+    .breadcrumbs-list a { color: var(--text-gray); text-decoration: none; }
+    .breadcrumbs-list a:hover { color: var(--primary); }
+    section { padding: 60px 0; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .course-list { display: flex; flex-direction: column; gap: 16px; }
+    .course-item { background: var(--white); border-radius: 12px; padding: 24px; box-shadow: var(--shadow); display: flex; gap: 24px; align-items: center; transition: transform 0.2s; }
+    .course-item:hover { transform: translateX(8px); }
+    .course-icon { width: 80px; height: 80px; background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .course-icon svg { width: 40px; height: 40px; color: var(--white); }
+    .course-info { flex: 1; }
+    .course-info h3 { font-size: 20px; margin-bottom: 8px; color: var(--text-dark); }
+    .course-info p { color: var(--text-gray); margin-bottom: 12px; font-size: 14px; }
+    .course-meta { display: flex; gap: 24px; font-size: 13px; color: var(--text-gray); }
+    .course-meta span { display: flex; align-items: center; gap: 6px; }
+    .course-meta svg { width: 16px; height: 16px; }
+    .course-prices { text-align: right; }
+    .course-price-old { text-decoration: line-through; color: var(--text-light); font-size: 14px; }
+    .course-price-current { font-size: 24px; font-weight: 700; color: var(--primary); display: block; margin: 4px 0; }
+    footer { background: var(--bg-dark); color: var(--white); padding: 48px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px; margin-bottom: 32px; }
+    .footer-about .logo-text { color: var(--white); }
+    .footer-about p { font-size: 14px; color: var(--text-light); margin-bottom: 16px; }
+    .footer-col h4 { font-size: 16px; margin-bottom: 16px; color: var(--white); }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { color: var(--text-light); text-decoration: none; font-size: 14px; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; font-size: 13px; color: var(--text-light); }
+    .footer-bottom a { color: var(--text-light); text-decoration: none; }
+    @media (max-width: 768px) { nav { display: none; } .course-item { flex-direction: column; text-align: center; } .course-prices { text-align: center; } .course-meta { justify-content: center; flex-wrap: wrap; } .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; gap: 12px; text-align: center; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <div class="container">
+        <div class="header-contacts">
+          <a href="tel:+78004448089">📞 8 (800) 444-80-89</a>
+          <a href="mailto:info@profobuchenie.ru">✉️ info@profobuchenie.ru</a>
+        </div>
+        <div><a href="/admin/" style="color: var(--white); text-decoration: none;">Личный кабинет</a></div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container">
+        <a href="/" class="logo">
+          <div class="logo-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg></div>
+          <span class="logo-text">ПРОФ<span>ОБУЧЕНИЕ</span></span>
+        </a>
+        <nav><a href="/courses/">Курсы</a><a href="/about/">О центре</a><a href="/teachers/">Преподаватели</a><a href="/reviews/">Отзывы</a><a href="/contacts/">Контакты</a></nav>
+        <div class="header-actions"><a href="/admin/" class="btn btn-primary btn-sm">Войти</a></div>
+      </div>
+    </div>
+  </header>
+  <section class="hero">
+    <div class="container">
+      <h1>Пожарная безопасность</h1>
+      <p>Обучение пожарно-техническому минимуму для руководителей, специалистов и работников организаций всех отраслей.</p>
+    </div>
+  </section>
+  <div class="breadcrumbs">
+    <div class="container">
+      <ul class="breadcrumbs-list"><li><a href="/">Главная</a></li><li><a href="/courses/">Курсы</a></li><li><span>Пожарная безопасность</span></li></ul>
+    </div>
+  </div>
+  <section>
+    <div class="container">
+      <div class="course-list">
+        <div class="course-item">
+          <div class="course-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg></div>
+          <div class="course-info">
+            <h3>Пожарно-технический минимум для руководителей (16 часов)</h3>
+            <p>Обучение для руководителей и главных специалистов организаций</p>
+            <div class="course-meta"><span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>16 часов</span><span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Дистанционно</span></div>
+          </div>
+          <div class="course-prices">
+            <span class="course-price-old">5 800 ₽</span>
+            <span class="course-price-current">4 500 ₽</span>
+            <button class="btn btn-primary" style="margin-top: 8px;">Записаться</button>
+          </div>
+        </div>
+        <div class="course-item">
+          <div class="course-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg></div>
+          <div class="course-info">
+            <h3>Пожарно-технический минимум для работников (8 часов)</h3>
+            <p>Обучение для всех категорий работников организаций</p>
+            <div class="course-meta"><span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>8 часов</span><span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Дистанционно</span></div>
+          </div>
+          <div class="course-prices">
+            <span class="course-price-current">2 500 ₽</span>
+            <button class="btn btn-primary" style="margin-top: 8px;">Записаться</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about"><a href="/" class="logo"><span class="logo-text" style="color: white;">ПРОФ<span>ОБУЧЕНИЕ</span></span></a><p>Профессиональное обучение с государственной лицензией.</p></div>
+        <div class="footer-col"><h4>Направления</h4><ul><li><a href="/courses/otrana-truda/">Охрана труда</a></li><li><a href="/courses/ppo/">Пожарная безопасность</a></li><li><a href="/courses/elektrobezopasnost/">Электробезопасность</a></li></ul></div>
+        <div class="footer-col"><h4>Контакты</h4><ul><li>📞 8 (800) 444-80-89</li><li>✉️ info@profobuchenie.ru</li></ul></div>
+      </div>
+      <div class="footer-bottom"><p>© 2024 Учебный центр "ПРОФОБУЧЕНИЕ".</p><p><a href="/privacy/">Политика конфиденциальности</a></p></div>
+    </div>
+  </footer>
+</body>
+</html>

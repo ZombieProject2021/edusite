@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд — EduCMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0F4C81;
+            --primary-light: #1a6fb8;
+            --success: #22c55e;
+            --warning: #f97316;
+            --danger: #ef4444;
+            --bg-light: #f5f7fa;
+            --bg-dark: #0F172A;
+            --text-dark: #1a1a2e;
+            --text-gray: #6b7280;
+            --border: #e5e7eb;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-dark);
+            color: #fff;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .sidebar-logo span {
+            font-size: 28px;
+            color: var(--success);
+        }
+
+        .sidebar-nav {
+            padding: 16px 12px;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            padding: 0 12px;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .nav-link span {
+            font-size: 20px;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .mobile-header {
+            display: none;
+            background: #fff;
+            padding: 16px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .mobile-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .mobile-logo span {
+            color: var(--success);
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle span {
+            font-size: 28px;
+            color: var(--text-dark);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .header {
+            background: #fff;
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-top: 4px;
+        }
+
+        .breadcrumb a {
+            color: var(--success);
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-light);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .header-btn span {
+            font-size: 20px;
+            color: var(--text-gray);
+        }
+
+        .header-btn .badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            background: var(--bg-light);
+            border-radius: 8px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .user-name {
+            font-size: 13px;
+        }
+
+        .user-name strong {
+            display: block;
+            color: var(--text-dark);
+        }
+
+        .user-name span {
+            color: var(--text-gray);
+        }
+
+        .content {
+            padding: 32px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon span {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .stat-icon.blue { background: linear-gradient(135deg, #0F4C81 0%, #1a6fb8 100%); }
+        .stat-icon.green { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); }
+        .stat-icon.orange { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
+        .stat-icon.purple { background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); }
+
+        .stat-trend {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .stat-trend.up {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-link {
+            font-size: 13px;
+            color: var(--success);
+            text-decoration: none;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        .course-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .course-icon span {
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .course-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .course-category {
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success { background: rgba(34, 197, 94, 0.1); color: var(--success); }
+        .badge-warning { background: rgba(249, 115, 22, 0.1); color: var(--warning); }
+        .badge-info { background: rgba(15, 76, 129, 0.1); color: var(--primary); }
+
+        .quick-actions {
+            margin-top: 32px;
+        }
+
+        .quick-actions h3 {
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            border: 2px solid var(--border);
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-light);
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            .mobile-header {
+                display: block;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .header {
+                padding: 16px 20px;
+            }
+
+            .content {
+                padding: 80px 16px 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-wrapper {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="mobile-header">
+        <div class="mobile-header-content">
+            <a href="/admin" class="mobile-logo">
+                <span class="material-icons-outlined">school</span>
+                EduCMS
+            </a>
+            <button class="menu-toggle" id="mobileMenuToggle">
+                <span class="material-icons-outlined">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="/admin" class="sidebar-logo">
+                <span class="material-icons-outlined">school</span>
+                EduCMS
+            </a>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Основное</div>
+                <a href="/admin" class="nav-link active">
+                    <span class="material-icons-outlined">dashboard</span>
+                    Дашборд
+                </a>
+                <a href="/admin/courses/" class="nav-link">
+                    <span class="material-icons-outlined">auto_stories</span>
+                    Курсы
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Контент</div>
+                <a href="/admin/pages/" class="nav-link">
+                    <span class="material-icons-outlined">article</span>
+                    Страницы
+                </a>
+                <a href="/admin/news/" class="nav-link">
+                    <span class="material-icons-outlined">newspaper</span>
+                    Новости
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="header">
+            <div>
+                <h1 class="page-title">Дашборд</h1>
+                <div class="breadcrumb">
+                    <a href="/admin">Главная</a>
+                    <span class="material-icons-outlined" style="font-size: 16px;">chevron_right</span>
+                    <span>Обзор</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn">
+                    <span class="material-icons-outlined">notifications</span>
+                    <span class="badge"></span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">А</div>
+                    <div class="user-name">
+                        <strong>Администратор</strong>
+                        <span>admin@educms.ru</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">
+                            <span class="material-icons-outlined">auto_stories</span>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statCourses">0</div>
+                    <div class="stat-label">Всего курсов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">
+                            <span class="material-icons-outlined">visibility</span>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statActiveCourses">0</div>
+                    <div class="stat-label">Активных курсов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange">
+                            <span class="material-icons-outlined">star</span>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statFeatured">0</div>
+                    <div class="stat-label">Рекомендуемых</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple">
+                            <span class="material-icons-outlined">article</span>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statPages">0</div>
+                    <div class="stat-label">Страниц</div>
+                </div>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Популярные курсы</h3>
+                        <a href="/admin/courses/" class="card-link">Управлять →</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Курс</th>
+                                        <th>Цена</th>
+                                        <th>Статус</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="popularCoursesBody">
+                                    <tr>
+                                        <td colspan="3" style="text-align: center; color: var(--text-gray);">Загрузка...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Страницы сайта</h3>
+                        <a href="/admin/pages/" class="card-link">Управлять →</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Страница</th>
+                                        <th>Алиас</th>
+                                        <th>Статус</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pagesBody">
+                                    <tr>
+                                        <td colspan="3" style="text-align: center; color: var(--text-gray);">Загрузка...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h3>Быстрые действия</h3>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="/admin/courses/new/" class="btn btn-primary">
+                        <span class="material-icons-outlined">add</span>
+                        Добавить курс
+                    </a>
+                    <a href="/admin/pages/new/" class="btn btn-secondary">
+                        <span class="material-icons-outlined">article</span>
+                        Добавить страницу
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/store-api.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        // Configure API URL for server
+        window.__API_URL__ = 'http://172.17.140.100:5000/api';
+        const api = new StoreAPI();
+        
+        document.addEventListener('DOMContentLoaded', async function() {
+
+            // Load stats
+            try {
+                const stats = await api.getStats();
+                document.getElementById('statCourses').textContent = stats.totalCourses || 0;
+                document.getElementById('statActiveCourses').textContent = stats.totalCourses || 0;
+                document.getElementById('statFeatured').textContent = stats.featuredCourses || 0;
+                document.getElementById('statPages').textContent = stats.totalPages || 0;
+            } catch (e) {
+                console.error('Error loading stats:', e);
+            }
+
+            // Load popular courses
+            try {
+                const courses = await api.getCourses();
+                const activeCourses = courses.filter(c => c.active).slice(0, 5);
+                const coursesBody = document.getElementById('popularCoursesBody');
+
+                if (activeCourses.length > 0) {
+                    coursesBody.innerHTML = activeCourses.map(course => `
+                        <tr>
+                            <td>
+                                <div class="course-info">
+                                    <div class="course-icon">
+                                        <span class="material-icons-outlined">auto_stories</span>
+                                    </div>
+                                    <div>
+                                        <div class="course-name">${course.name}</div>
+                                        <div class="course-category">${course.duration || '—'}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${EduApp.formatPrice(course.price || 0)}</td>
+                            <td><span class="badge badge-success">${course.featured ? 'Рекомендуемый' : 'Активен'}</span></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    coursesBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-gray);">Нет активных курсов</td></tr>';
+                }
+            } catch (e) {
+                console.error('Error loading courses:', e);
+                document.getElementById('popularCoursesBody').innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-gray);">Ошибка загрузки курсов</td></tr>';
+            }
+
+            // Load pages
+            try {
+                const pages = await api.getPages();
+                const pagesBody = document.getElementById('pagesBody');
+
+                if (pages.length > 0) {
+                    pagesBody.innerHTML = pages.map(page => `
+                        <tr>
+                            <td>
+                                <div class="course-info">
+                                    <div class="course-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                                        <span class="material-icons-outlined">article</span>
+                                    </div>
+                                    <div>
+                                        <div class="course-name">${page.title}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>/${page.alias}/</td>
+                            <td><span class="badge ${page.active ? 'badge-success' : 'badge-warning'}">${page.active ? 'Опубликована' : 'Черновик'}</span></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    pagesBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-gray);">Нет страниц</td></tr>';
+                }
+            } catch (e) {
+                console.error('Error loading pages:', e);
+                document.getElementById('pagesBody').innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-gray);">Ошибка загрузки страниц</td></tr>';
+            }
+        });
+    </script>
+</body>
+</html>

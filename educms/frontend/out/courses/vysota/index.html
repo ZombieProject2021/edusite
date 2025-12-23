@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Работы на высоте — Учебный центр "ПРОФОБУЧЕНИЕ"</title>
+  <meta name="description" content="Обучение безопасным методам работ на высоте в Москве. Выдаём удостоверения допуска к работам на высоте.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #0F4C81; --accent: #E74C3C; --bg-light: #F8FAFC; --bg-dark: #0F172A; --text-dark: #1E293B; --text-gray: #64748B; --text-light: #94A3B8; --border: #E2E8F0; --white: #FFFFFF; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+    h1, h2, h3 { font-family: 'Manrope', sans-serif; font-weight: 700; }
+    header { background: var(--white); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
+    .header-top { background: var(--primary); color: var(--white); padding: 8px 0; font-size: 13px; }
+    .header-top .container { display: flex; justify-content: space-between; }
+    .header-contacts { display: flex; gap: 24px; }
+    .header-contacts a { color: var(--white); text-decoration: none; }
+    .header-main { padding: 16px 0; }
+    .header-main .container { display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, #1a6fb8 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .logo-icon svg { width: 28px; height: 28px; color: var(--white); }
+    .logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 20px; color: var(--primary); }
+    .logo-text span { color: var(--accent); }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; }
+    .btn-primary { background: var(--accent); color: var(--white); }
+    .hero { background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%); padding: 60px 0; color: var(--white); }
+    .hero h1 { font-size: 40px; margin-bottom: 16px; }
+    .hero p { font-size: 18px; opacity: 0.9; }
+    .breadcrumbs { background: var(--white); padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .breadcrumbs-list { display: flex; gap: 8px; font-size: 14px; list-style: none; }
+    .breadcrumbs-list a { color: var(--text-gray); text-decoration: none; }
+    section { padding: 60px 0; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .course-item { background: var(--white); border-radius: 12px; padding: 24px; box-shadow: var(--shadow); display: flex; gap: 24px; align-items: center; margin-bottom: 16px; }
+    .course-icon { width: 80px; height: 80px; background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .course-icon svg { width: 40px; height: 40px; color: var(--white); }
+    .course-info { flex: 1; }
+    .course-info h3 { font-size: 20px; margin-bottom: 8px; }
+    .course-info p { color: var(--text-gray); margin-bottom: 12px; }
+    .course-price-current { font-size: 24px; font-weight: 700; color: var(--primary); }
+    footer { background: var(--bg-dark); color: var(--white); padding: 48px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px; }
+    .footer-col h4 { font-size: 16px; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { color: var(--text-light); text-decoration: none; font-size: 14px; }
+    .footer-bottom { padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 24px; font-size: 13px; color: var(--text-light); }
+    @media (max-width: 768px) { .course-item { flex-direction: column; text-align: center; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <div class="container">
+        <div class="header-contacts"><a href="tel:+78004448089">📞 8 (800) 444-80-89</a></div>
+        <div><a href="/admin/" style="color: var(--white);">Личный кабинет</a></div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container">
+        <a href="/" class="logo"><div class="logo-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422"/></svg></div><span class="logo-text">ПРОФ<span>ОБУЧЕНИЕ</span></span></a>
+        <div class="header-actions"><a href="/admin/" class="btn btn-primary btn-sm">Войти</a></div>
+      </div>
+    </div>
+  </header>
+  <section class="hero">
+    <div class="container">
+      <h1>Работы на высоте</h1>
+      <p>Обучение безопасным методам и приёмам выполнения работ на высоте согласно Приказу 155н.</p>
+    </div>
+  </section>
+  <div class="breadcrumbs">
+    <div class="container">
+      <ul class="breadcrumbs-list"><li><a href="/">Главная</a></li><li><a href="/courses/">Курсы</a></li><li><span>Работы на высоте</span></li></ul>
+    </div>
+  </div>
+  <section>
+    <div class="container">
+      <div class="course-item">
+        <div class="course-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg></div>
+        <div class="course-info">
+          <h3>Безопасные методы и приёмы работ на высоте (24 часа)</h3>
+          <p>Обучение для работников, выполняющих работы на высоте</p>
+          <p><strong>24 часа</strong> | Дистанционно</p>
+        </div>
+        <div>
+          <span class="course-price-current">8 500 ₽</span>
+          <button class="btn btn-primary" style="margin-top: 8px;">Записаться</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col"><h4>Направления</h4><ul><li><a href="/courses/otrana-truda/">Охрана труда</a></li><li><a href="/courses/ppo/">Пожарная безопасность</a></li><li><a href="/courses/elektrobezopasnost/">Электробезопасность</a></li></ul></div>
+        <div class="footer-col"><h4>Контакты</h4><ul><li>📞 8 (800) 444-80-89</li></ul></div>
+      </div>
+      <div class="footer-bottom">© 2024 Учебный центр "ПРОФОБУЧЕНИЕ".</div>
+    </div>
+  </footer>
+</body>
+</html>

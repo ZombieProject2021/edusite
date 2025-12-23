@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO-Master CMS - Современная система управления контентом</title>
+  <meta name="description" content="Создавайте оптимизированный контент с помощью нашей современной CMS. Полная SEO-оптимизация, аналитика и удобный интерфейс.">
+  <meta name="keywords" content="CMS, SEO, Content Management, оптимизация сайта">
+  <meta property="og:title" content="SEO-Master CMS - Современная система управления контентом">
+  <meta property="og:description" content="Создавайте оптимизированный контент с помощью нашей современной CMS">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --background: linear-gradient(135deg, #4f46e5 0%, #4338ca 50%, #312e81 100%);
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--background);
+      min-height: 100vh;
+      color: white;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    header {
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 24px; font-weight: 700; }
+    nav { display: flex; gap: 24px; align-items: center; }
+    nav a {
+      color: white;
+      text-decoration: none;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+    nav a:hover { opacity: 1; }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+    }
+    .btn-outline:hover { background: white; color: var(--primary); }
+    .btn-primary {
+      background: white;
+      color: var(--primary);
+    }
+    .btn-primary:hover { background: #f0f0f0; }
+    .hero {
+      padding: 100px 0;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .hero p {
+      font-size: 20px;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .features {
+      padding: 80px 0;
+    }
+    .features h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 48px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+    }
+    .feature-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 32px;
+      transition: transform 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-4px); }
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .feature-icon svg { width: 28px; height: 28px; }
+    .feature-card h3 { font-size: 20px; margin-bottom: 12px; }
+    .feature-card p { opacity: 0.8; line-height: 1.6; }
+    .technical {
+      padding: 80px 0;
+    }
+    .technical-card {
+      background: white;
+      border-radius: 24px;
+      padding: 48px;
+    }
+    .technical h2 {
+      color: #111827;
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 48px;
+    }
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+    .tech-item {
+      text-align: center;
+      padding: 24px;
+    }
+    .tech-item .icon { font-size: 40px; margin-bottom: 16px; }
+    .tech-item h4 { color: #111827; margin-bottom: 8px; }
+    .cta {
+      padding: 80px 0;
+      text-align: center;
+    }
+    .cta-card {
+      background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+      border-radius: 24px;
+      padding: 48px;
+    }
+    .cta h2 { font-size: 32px; margin-bottom: 16px; }
+    .cta p { font-size: 18px; opacity: 0.9; margin-bottom: 32px; }
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding: 32px 0;
+      text-align: center;
+      opacity: 0.7;
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 36px; }
+      .hero p { font-size: 18px; }
+      header { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="logo">SEO-Master CMS</span>
+      <nav>
+        <a href="#features">Возможности</a>
+        <!-- Динамические ссылки на посты из меню -->
+        <a href="/posts/kak-vybrat-klyuchevye-slova/">Как выбрать ключевые слова</a>
+        <a href="/posts/seo-optimizaciya-saita/">SEO-оптимизация</a>
+        <a href="/posts/vnutrennyaya-optimizaciya/">Внутренняя оптимизация</a>
+        <a href="/login/">Войти</a>
+        <a href="/admin/" class="btn btn-outline">В админку</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>Создавайте контент,<br>который ранжируется</h1>
+      <p>Современная система управления контентом с полной SEO-оптимизацией.<br>Анализируйте, оптимизируйте и публикуйте — всё в одном месте.</p>
+      <div class="hero-buttons">
+        <a href="/admin/" class="btn btn-primary">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Перейти в админ-панель
+        </a>
+        <a href="#features" class="btn btn-outline">Узнать больше</a>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <h2>Почему выбирают SEO-Master CMS</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <h3>SEO-анализ в реальном времени</h3>
+          <p>Получайте мгновенную обратную связь о качестве SEO-оптимизации. Система анализирует заголовки, мета-теги, плотность ключевых слов и даёт рекомендации.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3>Максимальная производительность</h3>
+          <p>Страницы загружаются мгновенно благодаря оптимизации изображений, кэшированию и современной архитектуре. Core Web Vitals показатели 90+.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </div>
+          <h3>Структурированные данные</h3>
+          <p>Автоматическая генерация Schema.org разметки для лучшего понимания контента поисковыми системами и получения расширенных сниппетов.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="technical">
+      <div class="technical-card">
+        <h2>Технические возможности</h2>
+        <div class="tech-grid">
+          <div class="tech-item">
+            <div class="icon">📄</div>
+            <h4>Автоматические Sitemap</h4>
+          </div>
+          <div class="tech-item">
+            <div class="icon">🔗</div>
+            <h4>Человекопонятные URL</h4>
+          </div>
+          <div class="tech-item">
+            <div class="icon">🖼️</div>
+            <h4>WebP оптимизация</h4>
+          </div>
+          <div class="tech-item">
+            <div class="icon">🌐</div>
+            <h4>Hreflang поддержка</h4>
+          </div>
+          <div class="tech-item">
+            <div class="icon">📱</div>
+            <h4>Open Graph</h4>
+          </div>
+          <div class="tech-item">
+            <div class="icon">🐦</div>
+            <h4>Twitter Cards</h4>
+          </div>
+          <div class="tech-item">
+            <div class="icon">⚡</div>
+            <h4>Lazy Loading</h4>
+          </div>
+          <div class="tech-item">
+            <div class="icon">🔒</div>
+            <h4>Безопасность</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="cta-card">
+        <h2>Готовы улучшить свой SEO?</h2>
+        <p>Начните использовать SEO-Master CMS уже сегодня</p>
+        <a href="/admin/" class="btn btn-primary" style="background: white; color: var(--primary);">
+          Перейти в админ-панель
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2024 SEO-Master CMS. Все права защищены.</p>
+    </footer>
+  </div>
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "SEO-Master CMS",
+    "url": "http://localhost:3000",
+    "description": "Современная система управления контентом с полной SEO-оптимизацией"
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход - SEO-Master CMS</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 50%, #312e81 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .login-container { width: 100%; max-width: 420px; }
+    .logo { text-align: center; margin-bottom: 8px; }
+    .logo a {
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .subtitle { text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 32px; }
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      padding: 40px;
+    }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px; }
+    .input-wrapper { position: relative; }
+    .input-wrapper svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: #9ca3af;
+    }
+    input {
+      width: 100%;
+      padding: 14px 14px 14px 46px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: all 0.2s;
+      outline: none;
+    }
+    input:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .checkbox-wrapper { display: flex; align-items: center; gap: 8px; }
+    .checkbox-wrapper input { width: auto; padding: 0; }
+    .checkbox-wrapper label { margin: 0; font-weight: 400; }
+    .forgot { color: #4f46e5; text-decoration: none; font-size: 14px; }
+    .forgot:hover { text-decoration: underline; }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn:hover { background: #4338ca; }
+    .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+    .demo-info {
+      margin-top: 24px;
+      padding: 16px;
+      background: #f3f4f6;
+      border-radius: 10px;
+    }
+    .demo-info p {
+      font-size: 13px;
+      color: #6b7280;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .demo-info strong { color: #374151; }
+    .footer { text-align: center; margin-top: 24px; }
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+    .footer a:hover { text-decoration: underline; }
+    .error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .loading { display: none; }
+    .loading::after {
+      content: '';
+      width: 18px;
+      height: 18px;
+      border: 2px solid transparent;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <a href="/">SEO-Master CMS</a>
+    </div>
+    <p class="subtitle">Вход в админ-панель</p>
+
+    <div class="card">
+      <div id="error" class="error"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-wrapper">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <input type="email" id="email" name="email" placeholder="admin@seocms.ru" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Пароль</label>
+          <div class="input-wrapper">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+          </div>
+        </div>
+
+        <div class="options">
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="remember">
+            <label for="remember">Запомнить меня</label>
+          </div>
+          <a href="#" class="forgot">Забыли пароль?</a>
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn">
+          <span class="btn-text">Войти</span>
+          <span class="loading"></span>
+        </button>
+      </form>
+
+      <div class="demo-info">
+        <p><strong>Демонстрационные данные:</strong><br>
+        Email: admin@seocms.ru<br>
+        Пароль: admin123</p>
+      </div>
+    </div>
+
+    <p class="footer">
+      Нет аккаунта? <a href="#">Регистрация</a>
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorDiv = document.getElementById('error');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      submitBtn.disabled = true;
+      errorDiv.style.display = 'none';
+
+      // Simulate API call
+      setTimeout(() => {
+        if (email === 'admin@seocms.ru' && password === 'admin123') {
+          localStorage.setItem('token', 'demo-token');
+          localStorage.setItem('user', JSON.stringify({
+            id: '1',
+            email: 'admin@seocms.ru',
+            name: 'Администратор',
+            role: 'admin'
+          }));
+          window.location.href = '/admin/';
+        } else {
+          errorDiv.textContent = 'Неверный email или пароль';
+          errorDiv.style.display = 'block';
+          submitBtn.disabled = false;
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

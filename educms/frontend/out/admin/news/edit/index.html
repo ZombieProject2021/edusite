@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование новости — EduCMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f5f7fa;
+            color: #1a1a2e;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo span {
+            font-size: 28px;
+            color: #4ade80;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 0 20px;
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .nav-link.active {
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+            border-left-color: #4ade80;
+        }
+
+        .nav-link span {
+            font-size: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        .breadcrumb a {
+            color: #4ade80;
+            text-decoration: none;
+        }
+
+        .breadcrumb span {
+            font-size: 16px;
+        }
+
+        .form-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 32px;
+            max-width: 900px;
+        }
+
+        .form-section {
+            margin-bottom: 28px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0fdf4;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: #ef4444;
+            margin-left: 2px;
+        }
+
+        .form-input {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4ade80;
+            box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.1);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 200px;
+            line-height: 1.6;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .alias-generator {
+            display: flex;
+            gap: 8px;
+        }
+
+        .alias-generator .form-input {
+            flex: 1;
+        }
+
+        .btn-generate {
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #6b7280;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-generate:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #4ade80;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: #ef4444;
+            border: 2px solid #fee2e2;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 80px 16px 20px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .alias-generator {
+                flex-direction: column;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="/admin" class="sidebar-logo">
+                <span class="material-icons-outlined">school</span>
+                EduCMS
+            </a>
+            <div class="sidebar-subtitle">Панель управления</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Основное</div>
+                <a href="/admin" class="nav-link">
+                    <span class="material-icons-outlined">dashboard</span>
+                    Дашборд
+                </a>
+                <a href="/admin/courses/" class="nav-link">
+                    <span class="material-icons-outlined">auto_stories</span>
+                    Курсы
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Контент</div>
+                <a href="/admin/pages/" class="nav-link">
+                    <span class="material-icons-outlined">article</span>
+                    Страницы
+                </a>
+                <a href="/admin/news/" class="nav-link active">
+                    <span class="material-icons-outlined">newspaper</span>
+                    Новости
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Система</div>
+                <a href="/admin/settings/" class="nav-link">
+                    <span class="material-icons-outlined">settings</span>
+                    Настройки
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1 class="page-title" id="pageTitleText">Редактирование новости</h1>
+                <div class="breadcrumb">
+                    <a href="/admin">Главная</a>
+                    <span class="material-icons-outlined">chevron_right</span>
+                    <a href="/admin/news/">Новости</a>
+                    <span class="material-icons-outlined">chevron_right</span>
+                    <span id="breadcrumbCurrent">Редактирование</span>
+                </div>
+            </div>
+        </header>
+
+        <div id="alertSuccess" class="alert alert-success">Новость успешно сохранена!</div>
+        <div id="alertError" class="alert alert-error">Произошла ошибка при сохранении.</div>
+
+        <div class="form-card">
+            <form id="newsForm">
+                <div class="form-section">
+                    <h2 class="form-section-title">Основная информация</h2>
+
+                    <div class="form-group">
+                        <label class="form-label" for="newsTitle">
+                            Заголовок новости <span class="required">*</span>
+                        </label>
+                        <input type="text" id="newsTitle" name="title" class="form-input" placeholder="Например: Новый курс по пожарной безопасности" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="newsAlias">
+                            Алиас (URL) <span class="required">*</span>
+                        </label>
+                        <div class="alias-generator">
+                            <input type="text" id="newsAlias" name="alias" class="form-input" placeholder="novyj-kurs" required>
+                            <button type="button" class="btn-generate" onclick="generateAlias()">
+                                <span class="material-icons-outlined">auto_fix_high</span>
+                                Сгенерировать
+                            </button>
+                        </div>
+                        <div class="form-hint">Будет использоваться в URL: /news/[alias]/</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-section-title">Содержание</h2>
+
+                    <div class="form-group">
+                        <label class="form-label" for="newsContent">
+                            Текст новости <span class="required">*</span>
+                        </label>
+                        <textarea id="newsContent" name="content" class="form-input" placeholder="Введите текст новости..." required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-section-title">Настройки публикации</h2>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsActive" name="active" checked>
+                        <label for="newsActive">Опубликовать новость</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-icons-outlined">save</span>
+                        Сохранить изменения
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="cancelForm()">
+                        <span class="material-icons-outlined">close</span>
+                        Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="../../../js/store-api.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script>
+        // Configure API URL for server
+        window.__API_URL__ = 'http://172.17.140.100:5000/api';
+        const api = new StoreAPI();
+
+        document.addEventListener('DOMContentLoaded', async function() {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const newsId = urlParams.get('id');
+
+            if (newsId) {
+                try {
+                    const news = await api.getNewsItem(parseInt(newsId));
+                    if (news) {
+                        document.getElementById('newsTitle').value = news.title || '';
+                        document.getElementById('newsAlias').value = news.alias || '';
+                        document.getElementById('newsContent').value = news.content || '';
+                        document.getElementById('newsActive').checked = news.active;
+
+                        document.getElementById('pageTitleText').textContent = 'Редактирование новости';
+                        document.getElementById('breadcrumbCurrent').textContent = news.title || 'Редактирование';
+                    }
+                } catch (e) {
+                    console.error('Error loading news:', e);
+                }
+            }
+
+            document.getElementById('newsForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await saveNews(api, newsId, true);
+            });
+        });
+
+        async function saveNews(api, newsId, publish) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = newsId || urlParams.get('id');
+
+            const formData = {
+                title: document.getElementById('newsTitle').value,
+                alias: document.getElementById('newsAlias').value,
+                content: document.getElementById('newsContent').value,
+                active: publish ? 1 : 0
+            };
+
+            try {
+                if (id) {
+                    await api.updateNews(parseInt(id), formData);
+                } else {
+                    await api.createNews(formData);
+                }
+                document.getElementById('alertSuccess').style.display = 'block';
+                setTimeout(() => window.location.href = '/admin/news/', 1500);
+            } catch (e) {
+                console.error('Error saving news:', e);
+                document.getElementById('alertError').style.display = 'block';
+            }
+        }
+
+        function generateAlias() {
+            const titleInput = document.getElementById('newsTitle');
+            const aliasInput = document.getElementById('newsAlias');
+
+            if (titleInput.value.trim()) {
+                aliasInput.value = EduApp.generateAlias(titleInput.value);
+            }
+        }
+
+        function cancelForm() {
+            if (EduApp.confirmAction('Вы уверены, что хотите отменить редактирование?')) {
+                window.location.href = '/admin/news/';
+            }
+        }
+    </script>
+</body>
+</html>

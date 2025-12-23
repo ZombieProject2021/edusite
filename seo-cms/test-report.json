@@ -1,0 +1,151 @@
+{
+  "passed": 28,
+  "failed": 1,
+  "tests": [
+    {
+      "name": "Главная страница админки загружается",
+      "status": "PASSED",
+      "details": "Заголовок: Дашборд"
+    },
+    {
+      "name": "Страница постов загружается",
+      "status": "PASSED",
+      "details": "Заголовок: Посты"
+    },
+    {
+      "name": "Кнопка добавления поста присутствует",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Страница добавления поста загружается",
+      "status": "PASSED",
+      "details": "Заголовок: Новый пост"
+    },
+    {
+      "name": "Поле заголовка присутствует",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Редактор контента присутствует",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Панель SEO-анализа присутствует",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Страница редактирования поста загружается (404 исправлен)",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Страница медиабиблиотеки загружается",
+      "status": "PASSED",
+      "details": "Заголовок: SEO CMS"
+    },
+    {
+      "name": "Область загрузки файлов присутствует",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Страница SEO-анализа загружается",
+      "status": "PASSED",
+      "details": "Заголовок: SEO CMS"
+    },
+    {
+      "name": "Страница настроек загружается",
+      "status": "PASSED",
+      "details": "Заголовок: SEO CMS"
+    },
+    {
+      "name": "Главная страница сайта загружается",
+      "status": "PASSED",
+      "details": "Заголовок: Создавайте контент,который ранжируется"
+    },
+    {
+      "name": "Боковая навигация присутствует",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Ссылка на посты в навигации",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Ссылка на медиабиблиотеку в навигации",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Ссылка на SEO-анализ в навигации",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Ссылка на настройки в навигации",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Tailwind CSS стили применены",
+      "status": "FAILED",
+      "details": ""
+    },
+    {
+      "name": "Кнопка мобильного меню присутствует",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Поле заголовка в форме редактирования",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Поле slug в форме редактирования",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Область контента в форме редактирования",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Отображение SEO-оценки",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Поле meta description",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Поле keywords",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Форма авторизации присутствует",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Поле email",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "name": "Поле пароля",
+      "status": "PASSED",
+      "details": ""
+    }
+  ]
+}

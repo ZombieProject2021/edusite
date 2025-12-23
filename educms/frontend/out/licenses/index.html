@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лицензии — Учебный центр "ПРОФОБУЧЕНИЕ"</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #0F4C81; --accent: #E74C3C; --bg-light: #F8FAFC; --bg-dark: #0F172A; --text-dark: #1E293B; --text-gray: #64748B; --white: #FFFFFF; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-dark); }
+    h1, h2, h3 { font-family: 'Manrope', sans-serif; font-weight: 700; }
+    header { background: var(--white); box-shadow: var(--shadow); padding: 16px 0; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .header-main .container { display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { width: 48px; height: 48px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .logo-text { font-weight: 800; font-size: 20px; color: var(--primary); }
+    .logo-text span { color: var(--accent); }
+    .btn { display: inline-flex; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; }
+    .btn-primary { background: var(--accent); color: var(--white); }
+    .hero { background: linear-gradient(135deg, var(--primary) 0%, #1a6fb8 100%); padding: 60px 0; color: var(--white); }
+    .hero h1 { font-size: 40px; margin-bottom: 16px; }
+    .breadcrumbs { background: var(--white); padding: 16px 0; border-bottom: 1px solid #e5e7eb; }
+    .breadcrumbs-list { display: flex; gap: 8px; font-size: 14px; list-style: none; }
+    .breadcrumbs-list a { color: var(--text-gray); text-decoration: none; }
+    section { padding: 60px 0; }
+    .license-card { background: var(--white); border-radius: 16px; padding: 40px; box-shadow: var(--shadow); display: flex; gap: 32px; align-items: flex-start; }
+    .license-icon { width: 120px; height: 120px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .license-icon svg { width: 60px; height: 60px; color: var(--white); }
+    .license-info h2 { font-size: 24px; margin-bottom: 16px; }
+    .license-info p { color: var(--text-gray); margin-bottom: 12px; }
+    .license-number { font-weight: 600; color: var(--primary); font-size: 18px; }
+    footer { background: var(--bg-dark); color: var(--white); padding: 48px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px; }
+    .footer-col h4 { font-size: 16px; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { color: #94A3B8; text-decoration: none; font-size: 14px; }
+    @media (max-width: 768px) { .license-card { flex-direction: column; text-align: center; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-main">
+        <a href="/" class="logo"><div class="logo-icon"><svg fill="none" stroke="white" viewBox="0 0 24 24" width="28" height="28"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><span class="logo-text">ПРОФ<span>ОБУЧЕНИЕ</span></span></a>
+        <a href="/admin/" class="btn btn-primary btn-sm">Войти</a>
+      </div>
+    </div>
+  </header>
+  <section class="hero">
+    <div class="container"><h1>Лицензии и документы</h1></div>
+  </section>
+  <div class="breadcrumbs">
+    <div class="container">
+      <ul class="breadcrumbs-list"><li><a href="/">Главная</a></li><li><span>Лицензии</span></li></ul>
+    </div>
+  </div>
+  <section>
+    <div class="container">
+      <div class="license-card">
+        <div class="license-icon"><svg fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg></div>
+        <div class="license-info">
+          <h2>Государственная лицензия</h2>
+          <p>ООО «Учебный центр ПРОФОБУЧЕНИЕ» осуществляет образовательную деятельность на основании государственной лицензии.</p>
+          <p class="license-number">Лицензия № 1234 от 15 марта 2024 года</p>
+          <p>Выдана Комитетом по образованию</p>
+          <p>Регистрационный номер в реестре лицензий: 78Л01 №0001234</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col"><h4>Направления</h4><ul><li><a href="/courses/otrana-truda/">Охрана труда</a></li><li><a href="/courses/ppo/">Пожарная безопасность</a></li><li><a href="/courses/elektrobezopasnost/">Электробезопасность</a></li></ul></div>
+        <div class="footer-col"><h4>Контакты</h4><ul><li>📞 8 (800) 444-80-89</li></ul></div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

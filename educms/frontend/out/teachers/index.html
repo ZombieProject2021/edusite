@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Преподаватели — Учебный центр "ПРОФОБУЧЕНИЕ"</title>
+  <meta name="description" content="Наши преподаватели — практикующие эксперты с многолетним опытом работы в сфере охраны труда, пожарной безопасности и промышленной безопасности.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #0F4C81;
+      --primary-light: #1a6fb8;
+      --primary-dark: #0a3a63;
+      --accent: #E74C3C;
+      --success: #27AE60;
+      --bg-light: #F8FAFC;
+      --bg-dark: #0F172A;
+      --text-dark: #1E293B;
+      --text-gray: #64748B;
+      --text-light: #94A3B8;
+      --border: #E2E8F0;
+      --white: #FFFFFF;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+    h1, h2, h3 { font-family: 'Manrope', sans-serif; font-weight: 700; line-height: 1.2; }
+    
+    header { background: var(--white); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
+    .header-top { background: var(--primary); color: var(--white); padding: 8px 0; font-size: 13px; }
+    .header-top .container { display: flex; justify-content: space-between; align-items: center; }
+    .header-contacts { display: flex; gap: 24px; }
+    .header-contacts a { color: var(--white); text-decoration: none; opacity: 0.9; }
+    .header-main { padding: 16px 0; }
+    .header-main .container { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon {
+      width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 28px; height: 28px; color: var(--white); }
+    .logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 20px; color: var(--primary); }
+    .logo-text span { color: var(--accent); }
+    nav { display: flex; gap: 8px; }
+    nav a {
+      padding: 10px 16px; color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 14px;
+      border-radius: 8px; transition: all 0.2s;
+    }
+    nav a:hover { background: var(--bg-light); color: var(--primary); }
+    nav a.active { background: var(--primary); color: var(--white); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 8px;
+      font-weight: 600; font-size: 14px; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: var(--white); }
+    .btn-sm { padding: 8px 16px; font-size: 13px; }
+    
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: 60px 0; color: var(--white);
+    }
+    .hero h1 { font-size: 40px; margin-bottom: 16px; }
+    .hero p { font-size: 18px; opacity: 0.9; max-width: 600px; }
+    
+    .breadcrumbs { background: var(--white); padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .breadcrumbs-list { display: flex; gap: 8px; font-size: 14px; list-style: none; }
+    .breadcrumbs-list a { color: var(--text-gray); text-decoration: none; }
+    .breadcrumbs-list a:hover { color: var(--primary); }
+    
+    section { padding: 60px 0; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .section-header { margin-bottom: 40px; }
+    .section-header h2 { font-size: 32px; color: var(--text-dark); }
+    
+    .teachers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .teacher-card {
+      background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow);
+      transition: transform 0.3s;
+    }
+    .teacher-card:hover { transform: translateY(-4px); }
+    .teacher-photo {
+      height: 200px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .teacher-photo span { font-size: 64px; color: var(--white); opacity: 0.8; }
+    .teacher-info { padding: 24px; }
+    .teacher-name { font-size: 20px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+    .teacher-position { color: var(--primary); font-weight: 500; margin-bottom: 12px; }
+    .teacher-bio { font-size: 14px; color: var(--text-gray); margin-bottom: 16px; }
+   ats { display: .teacher-st flex; gap: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .teacher-stat { text-align: center; }
+    .teacher-stat-value { font-size: 20px; font-weight: 700; color: var(--primary); }
+    .teacher-stat-label { font-size: 12px; color: var(--text-gray); }
+    
+    footer { background: var(--bg-dark); color: var(--white); padding: 48px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px; margin-bottom: 32px; }
+    .footer-about .logo-text { color: var(--white); }
+    .footer-about p { font-size: 14px; color: var(--text-light); margin-bottom: 16px; }
+    .footer-col h4 { font-size: 16px; margin-bottom: 16px; color: var(--white); }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { color: var(--text-light); text-decoration: none; font-size: 14px; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex; justify-content: space-between; font-size: 13px; color: var(--text-light);
+    }
+    .footer-bottom a { color: var(--text-light); text-decoration: none; }
+    
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .teachers-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <div class="container">
+        <div class="header-contacts">
+          <a href="tel:+78004448089">📞 8 (800) 444-80-89</a>
+          <a href="mailto:info@profobuchenie.ru">✉️ info@profobuchenie.ru</a>
+          <span>📍 Москва, Санкт-Петербург, регионы РФ</span>
+        </div>
+        <div><a href="/admin/" style="color: var(--white); text-decoration: none;">Личный кабинет</a></div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container">
+        <a href="/" class="logo">
+          <div class="logo-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>
+          </div>
+          <span class="logo-text">ПРОФ<span>ОБУЧЕНИЕ</span></span>
+        </a>
+        <nav>
+          <a href="/courses/">Курсы</a>
+          <a href="/about/">О центре</a>
+          <a href="/teachers/" class="active">Преподаватели</a>
+          <a href="/reviews/">Отзывы</a>
+          <a href="/contacts/">Контакты</a>
+        </nav>
+        <div class="header-actions">
+          <a href="/admin/" class="btn btn-primary btn-sm">Войти</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Наши преподаватели</h1>
+      <p>Практикующие эксперты с многолетним опытом работы в сфере охраны труда, пожарной безопасности и промышленной безопасности.</p>
+    </div>
+  </section>
+
+  <div class="breadcrumbs">
+    <div class="container">
+      <ul class="breadcrumbs-list">
+        <li><a href="/">Главная</a></li>
+        <li><span>Преподаватели</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <h2>Команда профессионалов</h2>
+      </div>
+      <div class="teachers-grid">
+        <div class="teacher-card">
+          <div class="teacher-photo" style="background: linear-gradient(135deg, #0F4C81 0%, #1a6fb8 100%);">
+            <span>АИ</span>
+          </div>
+          <div class="teacher-info">
+            <h3 class="teacher-name">Алексей Иванович</h3>
+            <p class="teacher-position">Специалист по охране труда</p>
+            <p class="teacher-bio">Кандидат технических наук. Опыт работы в сфере охраны труда более 15 лет. Автор более 20 научных публикаций.</p>
+            <div class="teacher-stats">
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">1 200+</div>
+                <div class="teacher-stat-label">Слушателей</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">15</div>
+                <div class="teacher-stat-label">Лет опыта</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">4.9</div>
+                <div class="teacher-stat-label">Рейтинг</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-photo" style="background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);">
+            <span>МС</span>
+          </div>
+          <div class="teacher-info">
+            <h3 class="teacher-name">Марина Сергеевна</h3>
+            <p class="teacher-position">Эксперт по пожарной безопасности</p>
+            <p class="teacher-bio">Полковник МЧС в отставке. Опыт работы в государственной противопожарной службе более 20 лет.</p>
+            <div class="teacher-stats">
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">980</div>
+                <div class="teacher-stat-label">Слушателей</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">20</div>
+                <div class="teacher-stat-label">Лет опыта</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">5.0</div>
+                <div class="teacher-stat-label">Рейтинг</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-photo" style="background: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);">
+            <span>ДК</span>
+          </div>
+          <div class="teacher-info">
+            <h3 class="teacher-name">Дмитрий Константинович</h3>
+            <p class="teacher-position">Инженер-энергетик</p>
+            <p class="teacher-bio">Инженер с высшей квалификационной группой по электробезопасности. Опыт работы на предприятиях РЖД и нефтегазовой отрасли.</p>
+            <div class="teacher-stats">
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">850</div>
+                <div class="teacher-stat-label">Слушателей</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">12</div>
+                <div class="teacher-stat-label">Лет опыта</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">4.8</div>
+                <div class="teacher-stat-label">Рейтинг</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-photo" style="background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);">
+            <span>ЕП</span>
+          </div>
+          <div class="teacher-info">
+            <h3 class="teacher-name">Елена Петровна</h3>
+            <p class="teacher-position">Специалист по экологической безопасности</p>
+            <p class="teacher-bio">Эколог с опытом работы в природоохранных органах. Эксперт по обращению с отходами I-IV класса опасности.</p>
+            <div class="teacher-stats">
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">650</div>
+                <div class="teacher-stat-label">Слушателей</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">10</div>
+                <div class="teacher-stat-label">Лет опыта</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">4.9</div>
+                <div class="teacher-stat-label">Рейтинг</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-photo" style="background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%);">
+            <span>СП</span>
+          </div>
+          <div class="teacher-info">
+            <h3 class="teacher-name">Сергей Павлович</h3>
+            <p class="teacher-position">Эксперт по промышленной безопасности</p>
+            <p class="teacher-bio">Аттестованный эксперт в области промышленной безопасности. Опыт работы на опасных производственных объектах.</p>
+            <div class="teacher-stats">
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">720</div>
+                <div class="teacher-stat-label">Слушателей</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">18</div>
+                <div class="teacher-stat-label">Лет опыта</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">4.9</div>
+                <div class="teacher-stat-label">Рейтинг</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-photo" style="background: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);">
+            <span>НО</span>
+          </div>
+          <div class="teacher-info">
+            <h3 class="teacher-name">Наталья Олеговна</h3>
+            <p class="teacher-position">Специалист по обучению</p>
+            <p class="teacher-bio">Педагог высшей категории. Разработчик более 50 учебных программ для корпоративного обучения.</p>
+            <div class="teacher-stats">
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">1 500+</div>
+                <div class="teacher-stat-label">Слушателей</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">8</div>
+                <div class="teacher-stat-label">Лет опыта</div>
+              </div>
+              <div class="teacher-stat">
+                <div class="teacher-stat-value">5.0</div>
+                <div class="teacher-stat-label">Рейтинг</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="/" class="logo">
+            <span class="logo-text" style="color: white;">ПРОФ<span>ОБУЧЕНИЕ</span></span>
+          </a>
+          <p>Профессиональное обучение с государственной лицензией. Более 200 программ курсов.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Направления</h4>
+          <ul>
+            <li><a href="/courses/otrana-truda/">Охрана труда</a></li>
+            <li><a href="/courses/ppo/">Пожарная безопасность</a></li>
+            <li><a href="/courses/elektrobezopasnost/">Электробезопасность</a></li>
+            <li><a href="/courses/vysota/">Работы на высоте</a></li>
+            <li><a href="/courses/prombez/">Промышленная безопасность</a></li>
+            <li><a href="/courses/ecology/">Экологическая безопасность</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Информация</h4>
+          <ul>
+            <li><a href="/about/">О центре</a></li>
+            <li><a href="/teachers/">Преподаватели</a></li>
+            <li><a href="/reviews/">Отзывы</a></li>
+            <li><a href="/licenses/">Лицензии</a></li>
+            <li><a href="/documents/">Документы</a></li>
+            <li><a href="/faq/">Вопросы и ответы</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Контакты</h4>
+          <ul>
+            <li>📞 8 (800) 444-80-89</li>
+            <li>✉️ info@profobuchenie.ru</li>
+            <li>📍 г. Москва, ул. Тестовая, д. 1</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 Учебный центр "ПРОФОБУЧЕНИЕ". Все права защищены.</p>
+        <p><a href="/privacy/">Политика конфиденциальности</a> | <a href="/offer/">Договор-оферта</a></p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

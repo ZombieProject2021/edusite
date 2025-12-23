@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вопросы и ответы — Учебный центр "ПРОФОБУЧЕНИЕ"</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #0F4C81; --accent: #E74C3C; --bg-light: #F8FAFC; --bg-dark: #0F172A; --text-dark: #1E293B; --text-gray: #64748B; --white: #FFFFFF; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-dark); }
+    h1, h2, h3 { font-family: 'Manrope', sans-serif; font-weight: 700; }
+    header { background: var(--white); box-shadow: var(--shadow); padding: 16px 0; }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+    .header-main .container { display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { width: 48px; height: 48px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .logo-text { font-weight: 800; font-size: 20px; color: var(--primary); }
+    .logo-text span { color: var(--accent); }
+    .btn { display: inline-flex; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; }
+    .btn-primary { background: var(--accent); color: var(--white); }
+    .hero { background: linear-gradient(135deg, var(--primary) 0%, #1a6fb8 100%); padding: 60px 0; color: var(--white); }
+    .hero h1 { font-size: 40px; }
+    .breadcrumbs { background: var(--white); padding: 16px 0; border-bottom: 1px solid #e5e7eb; }
+    .breadcrumbs-list { display: flex; gap: 8px; font-size: 14px; list-style: none; }
+    .breadcrumbs-list a { color: var(--text-gray); text-decoration: none; }
+    section { padding: 60px 0; }
+    .faq-item { background: var(--white); border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow); }
+    .faq-item h3 { font-size: 18px; margin-bottom: 12px; color: var(--primary); }
+    .faq-item p { color: var(--text-gray); line-height: 1.7; }
+    footer { background: var(--bg-dark); color: var(--white); padding: 32px 0; text-align: center; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-main">
+        <a href="/" class="logo"><div class="logo-icon"><svg fill="none" stroke="white" viewBox="0 0 24 24" width="28" height="28"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/></svg></div><span class="logo-text">ПРОФ<span>ОБУЧЕНИЕ</span></span></a>
+        <a href="/admin/" class="btn btn-primary btn-sm">Войти</a>
+      </div>
+    </div>
+  </header>
+  <section class="hero">
+    <div class="container"><h1>Вопросы и ответы</h1></div>
+  </section>
+  <div class="breadcrumbs">
+    <div class="container">
+      <ul class="breadcrumbs-list"><li><a href="/">Главная</a></li><li><span>FAQ</span></li></ul>
+    </div>
+  </div>
+  <section>
+    <div class="container">
+      <div class="faq-item">
+        <h3>Как проходит обучение?</h3>
+        <p>Обучение проводится в дистанционном формате через нашу образовательную платформу. Вы получаете доступ к учебным материалам и проходите курс в удобное для вас время.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Какие документы выдаются после обучения?</h3>
+        <p>По окончании обучения выдаётся удостоверение установленного образца, действительное на всей территории Российской Федерации. Данные вносятся в ФИС ФРДО.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Как оплатить обучение?</h3>
+        <p>Оплата производится банковской картой на сайте или по безналичному расчёту для юридических лиц. Также возможна оплата в рассрочку.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Можно ли вернуть деньги?</h3>
+        <p>Возврат денежных средств возможен в соответствии с Законом о защите прав потребителей, если услуга не была оказана.</p>
+      </div>
+    </div>
+  </section>
+  <footer>© 2024 Учебный центр "ПРОФОБУЧЕНИЕ". Все права защищены.</footer>
+</body>
+</html>

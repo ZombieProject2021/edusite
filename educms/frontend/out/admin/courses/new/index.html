@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить новый курс — EduCMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f5f7fa;
+            color: #1a1a2e;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo span {
+            font-size: 28px;
+            color: #4ade80;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 0 20px;
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .nav-link.active {
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+            border-left-color: #4ade80;
+        }
+
+        .nav-link span {
+            font-size: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .mobile-header {
+            display: none;
+            background: #fff;
+            padding: 16px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .mobile-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-decoration: none;
+        }
+
+        .mobile-logo span {
+            color: #4ade80;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle span {
+            font-size: 28px;
+            color: #1a1a2e;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        .breadcrumb a {
+            color: #4ade80;
+            text-decoration: none;
+        }
+
+        .breadcrumb span {
+            font-size: 16px;
+        }
+
+        .form-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 32px;
+            max-width: 900px;
+        }
+
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0fdf4;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .form-grid-full {
+            grid-column: span 2;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: #ef4444;
+            margin-left: 2px;
+        }
+
+        .form-input {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4ade80;
+            box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.1);
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .price-input-wrapper {
+            position: relative;
+        }
+
+        .price-input-wrapper .currency {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .price-input-wrapper .form-input {
+            padding-left: 36px;
+        }
+
+        .duration-input-wrapper {
+            display: flex;
+        }
+
+        .duration-input-wrapper .form-input {
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+
+        .duration-unit {
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 0 10px 10px 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .editor-container {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .editor-container .ql-toolbar {
+            border: none;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        .editor-container .ql-container {
+            border: none;
+            font-size: 15px;
+            min-height: 300px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 10px;
+            margin-top: 16px;
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            accent-color: #4ade80;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: #ef4444;
+            border: 2px solid #fee2e2;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+        .alias-generator {
+            display: flex;
+            gap: 8px;
+        }
+
+        .alias-generator .form-input {
+            flex: 1;
+        }
+
+        .btn-generate {
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .sidebar-overlay.active { display: block; }
+            .mobile-header { display: block; }
+            .main-content { margin-left: 0; padding: 80px 16px 20px; }
+            .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .page-title { font-size: 24px; }
+            .form-card { padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-grid-full { grid-column: span 1; }
+            .alias-generator { flex-direction: column; }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn { width: 100%; justify-content: center; }
+            .duration-input-wrapper { flex-direction: column; }
+            .duration-input-wrapper .form-input { border-radius: 10px; border-right: 2px solid #e5e7eb; }
+            .duration-unit { border-radius: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="mobile-header">
+        <div class="mobile-header-content">
+            <a href="/admin" class="mobile-logo">
+                <span class="material-icons-outlined">school</span>
+                EduCMS
+            </a>
+            <button class="menu-toggle" id="mobileMenuToggle">
+                <span class="material-icons-outlined">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="/admin" class="sidebar-logo">
+                <span class="material-icons-outlined">school</span>
+                EduCMS
+            </a>
+            <div class="sidebar-subtitle">Панель управления</div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Основное</div>
+                <a href="/admin" class="nav-link">
+                    <span class="material-icons-outlined">dashboard</span>
+                    Дашборд
+                </a>
+                <a href="/admin/courses/" class="nav-link active">
+                    <span class="material-icons-outlined">auto_stories</span>
+                    Курсы
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Контент</div>
+                <a href="/admin/pages/" class="nav-link">
+                    <span class="material-icons-outlined">article</span>
+                    Страницы
+                </a>
+                <a href="/admin/news/" class="nav-link">
+                    <span class="material-icons-outlined">newspaper</span>
+                    Новости
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Система</div>
+                <a href="/admin/settings/" class="nav-link">
+                    <span class="material-icons-outlined">settings</span>
+                    Настройки
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1 class="page-title">Добавить новый курс</h1>
+                <div class="breadcrumb">
+                    <a href="/admin">Главная</a>
+                    <span class="material-icons-outlined">chevron_right</span>
+                    <a href="/admin/courses/">Курсы</a>
+                    <span class="material-icons-outlined">chevron_right</span>
+                    <span>Новый курс</span>
+                </div>
+            </div>
+        </header>
+
+        <div id="alertSuccess" class="alert alert-success">Курс успешно создан!</div>
+        <div id="alertError" class="alert alert-error">Произошла ошибка.</div>
+
+        <div class="form-card">
+            <form id="courseForm">
+                <div class="form-section">
+                    <h2 class="form-section-title">Основная информация</h2>
+                    
+                    <div class="form-grid">
+                        <div class="form-group form-grid-full">
+                            <label class="form-label" for="courseName">
+                                Название курса <span class="required">*</span>
+                            </label>
+                            <input type="text" id="courseName" name="name" class="form-input" placeholder="Например: Python для начинающих" required>
+                        </div>
+                        
+                        <div class="form-group form-grid-full">
+                            <label class="form-label" for="courseAlias">
+                                Алиас (URL) <span class="required">*</span>
+                            </label>
+                            <div class="alias-generator">
+                                <input type="text" id="courseAlias" name="alias" class="form-input" placeholder="python-dlya-nachinayushchih" required>
+                                <button type="button" class="btn-generate" onclick="generateAlias()">
+                                    <span class="material-icons-outlined">auto_fix_high</span>
+                                    Сгенерировать
+                                </button>
+                            </div>
+                            <div class="form-hint">Будет использоваться в URL: /courses/[alias]/</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="coursePrice">
+                                Стоимость курса <span class="required">*</span>
+                            </label>
+                            <div class="price-input-wrapper">
+                                <span class="currency">₽</span>
+                                <input type="number" id="coursePrice" name="price" class="form-input" placeholder="25000" min="0" step="100" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="courseDuration">
+                                Продолжительность <span class="required">*</span>
+                            </label>
+                            <div class="duration-input-wrapper">
+                                <input type="number" id="courseDuration" name="duration" class="form-input" placeholder="3" min="1" required>
+                                <span class="duration-unit">месяца</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-section-title">Подробное описание</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="courseDescription">
+                            Описание курса <span class="required">*</span>
+                        </label>
+                        <div class="editor-container">
+                            <div id="editor"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-section-title">Дополнительные опции</h2>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="courseCategory">Категория</label>
+                            <select id="courseCategory" name="category" class="form-input">
+                                <option value="">Выберите категорию</option>
+                                <option value="programming">Программирование</option>
+                                <option value="design">Дизайн</option>
+                                <option value="marketing">Маркетинг</option>
+                                <option value="management">Менеджмент</option>
+                                <option value="languages">Языки</option>
+                                <option value="business">Бизнес</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="courseLevel">Уровень сложности</label>
+                            <select id="courseLevel" name="level" class="form-input">
+                                <option value="">Выберите уровень</option>
+                                <option value="beginner">Начинающий</option>
+                                <option value="intermediate">Средний</option>
+                                <option value="advanced">Продвинутый</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group form-grid-full">
+                            <label class="form-label" for="courseTeacher">Преподаватель</label>
+                            <select id="courseTeacher" name="teacher" class="form-input">
+                                <option value="">Выберите преподавателя</option>
+                                <option value="Иванов Иван Иванович">Иванов Иван Иванович</option>
+                                <option value="Петрова Анна Сергеевна">Петрова Анна Сергеевна</option>
+                                <option value="Сидоров Алексей Петрович">Сидоров Алексей Петрович</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="courseActive" name="active" checked>
+                        <label for="courseActive">Активен (курс отображается на сайте)</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="courseFeatured" name="featured">
+                        <label for="courseFeatured">Рекомендуемый (курс отображается на главной странице)</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-icons-outlined">save</span>
+                        Сохранить курс
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="saveDraftBtn">
+                        <span class="material-icons-outlined">drafts</span>
+                        Сохранить черновик
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="cancelForm()">
+                        <span class="material-icons-outlined">close</span>
+                        Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="../../../js/store-api.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script src="../../../js/courses.js"></script>
+    <script>
+        // Configure API URL for server
+        window.__API_URL__ = 'http://172.17.140.100:5000/api';
+        const api = new StoreAPI();
+        
+        document.addEventListener('DOMContentLoaded', async function() {
+            
+            // Initialize Quill editor
+            window.quill = new Quill('#editor', {
+                theme: 'snow',
+                placeholder: 'Введите описание курса...'
+            });
+
+            document.getElementById('courseForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await saveCourse(api, true);
+            });
+
+            document.getElementById('saveDraftBtn').addEventListener('click', async function() {
+                await saveCourse(api, false);
+            });
+        });
+
+        async function saveCourse(api, publish) {
+            const formData = {
+                name: document.getElementById('courseName').value,
+                description: window.quill.root.innerHTML,
+                duration: document.getElementById('courseDuration').value + ' месяца',
+                price: parseFloat(document.getElementById('coursePrice').value) || 0,
+                category: document.getElementById('courseCategory').value,
+                active: publish ? 1 : 0,
+                featured: document.getElementById('courseFeatured').checked ? 1 : 0,
+                image_url: 'linear-gradient(135deg, #4ade80 0%, #22c55e 100%)'
+            };
+
+            try {
+                await api.createCourse(formData);
+                document.getElementById('alertSuccess').style.display = 'block';
+                setTimeout(() => window.location.href = '/admin/courses/', 1500);
+            } catch (e) {
+                console.error('Error saving course:', e);
+                document.getElementById('alertError').style.display = 'block';
+            }
+        }
+
+        function generateAlias() {
+            const nameInput = document.getElementById('courseName');
+            const aliasInput = document.getElementById('courseAlias');
+            if (nameInput.value.trim()) {
+                aliasInput.value = EduApp.generateAlias(nameInput.value);
+                aliasInput.dataset.manual = 'true';
+            }
+        }
+
+        function cancelForm() {
+            if (EduApp.confirmAction('Вы уверены, что хотите отменить создание курса?')) {
+                window.location.href = '/admin/courses/';
+            }
+        }
+    </script>
+</body>
+</html>

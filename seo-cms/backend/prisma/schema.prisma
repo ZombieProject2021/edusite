@@ -1,0 +1,219 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Пользователи системы
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("editor") // admin, editor, author
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts     Post[]
+}
+
+// Посты и страницы
+model Post {
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  excerpt         String?
+  content         String
+  contentHtml     String?
+
+  // SEO поля
+  metaTitle       String?
+  metaDescription String?
+  metaKeywords    String?
+
+  // Open Graph
+  ogTitle         String?
+  ogDescription   String?
+  ogImage         String?
+
+  // Twitter Card
+  twitterCard     String?  @default("summary_large_image")
+  twitterSite     String?
+
+  // Canonical и техническое SEO
+  canonicalUrl    String?
+  noIndex         Boolean  @default(false)
+  noFollow        Boolean  @default(false)
+
+  // Schema.org
+  schemaType      String?  @default("Article")
+
+  // Статус и даты
+  status          String   @default("draft") // draft, published, archived
+  publishedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Связи
+  authorId        String
+  author          User     @relation(fields: [authorId], references: [id])
+
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id])
+
+  tags            PostTag[]
+  images          PostImage[]
+  revisions       PostRevision[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([publishedAt])
+}
+
+// Категории
+model Category {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  description     String?
+  parentId        String?
+
+  // SEO для категории
+  metaTitle       String?
+  metaDescription String?
+
+  posts           Post[]
+  children        Category[] @relation("CategoryHierarchy")
+  parent          Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+
+  @@index([slug])
+}
+
+// Теги
+model Tag {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  slug      String     @unique
+
+  posts     PostTag[]
+}
+
+// Связь постов и тегов
+model PostTag {
+  postId    String
+  tagId     String
+  post      Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag       Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+}
+
+// Медиафайлы
+model Media {
+  id          String   @id @default(uuid())
+  filename    String
+  originalName String
+  mimeType    String
+  size        Int
+  path        String
+
+  // SEO поля для изображений
+  alt         String?
+  caption     String?
+  title       String?
+
+  // WebP версия
+  webpPath    String?
+  webpSize    Int?
+
+  width       Int?
+  height      Int?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  posts       PostImage[]
+}
+
+// Связь постов и изображений
+model PostImage {
+  postId      String
+  mediaId     String
+  isFeatured  Boolean  @default(false)
+  sortOrder   Int      @default(0)
+
+  post        Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  media       Media   @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@id([postId, mediaId])
+}
+
+// Ревизии постов (версионирование)
+model PostRevision {
+  id          String   @id @default(uuid())
+  postId      String
+  title       String
+  content     String
+  createdAt   DateTime @default(now())
+
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+}
+
+// Настройки SEO
+model SeoSettings {
+  id              String   @id @default(uuid())
+  siteName        String
+  siteDescription String
+  siteUrl         String
+  logo            String?
+
+  // Social Media
+  ogDefaultImage  String?
+  twitterHandle   String?
+
+  // Technical
+  defaultTitle    String   @default("%title% | %sitename%")
+  defaultDesc     String?
+
+  // Schema.org
+  organizationName    String?
+  organizationLogo    String?
+  organizationUrl     String?
+
+  // Sitemap
+  sitemapEnabled     Boolean @default(true)
+  sitemapFrequency   String  @default("weekly")
+  sitemapPriority    Float   @default(0.8)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// Редиректы
+model Redirect {
+  id          String   @id @default(uuid())
+  fromUrl     String   @unique
+  toUrl       String
+  type        Int      @default(301) // 301, 302, 307
+  hits        Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([fromUrl])
+}
+
+// Hreflang (мультиязычность)
+model Hreflang {
+  id          String   @id @default(uuid())
+  postId      String
+  locale      String   @default("ru")
+  alternateUrl String
+
+  @@unique([postId, locale])
+}

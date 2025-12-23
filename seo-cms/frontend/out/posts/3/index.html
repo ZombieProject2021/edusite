@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Внутренняя оптимизация сайта: чек-лист - SEO-Master CMS</title>
+  <meta name="description" content="Полный чек-лист по внутренней оптимизации сайта. Проверьте, всё ли сделано правильно для успешного SEO.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --text: #1f2937;
+      --text-light: #6b7280;
+      --bg: #f9fafb;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    header .container { display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 20px; font-weight: 700; color: var(--primary); text-decoration: none; }
+    nav { display: flex; gap: 24px; align-items: center; }
+    nav a { color: var(--text-light); text-decoration: none; transition: color 0.2s; }
+    nav a:hover { color: var(--primary); }
+    nav a.active { color: var(--primary); font-weight: 500; }
+    .article { max-width: 800px; margin: 48px auto; padding: 0 24px; }
+    .article-meta { display: flex; gap: 16px; color: var(--text-light); font-size: 14px; margin-bottom: 16px; }
+    .article h1 { font-size: 36px; line-height: 1.2; margin-bottom: 24px; color: var(--text); }
+    .article-content { background: white; border-radius: 16px; padding: 48px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .article-content h2 { font-size: 24px; margin: 32px 0 16px; color: var(--text); }
+    .article-content h3 { font-size: 20px; margin: 24px 0 12px; color: var(--text); }
+    .article-content p { margin-bottom: 16px; color: #374151; }
+    .article-content ul, .article-content ol { margin: 16px 0; padding-left: 24px; }
+    .article-content li { margin-bottom: 8px; }
+    .article-content strong { color: var(--text); }
+    .checklist { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 12px; padding: 24px; margin: 24px 0; }
+    .checklist-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+    .checklist-item:last-child { margin-bottom: 0; }
+    .check-icon { width: 20px; height: 20px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; flex-shrink: 0; }
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
+    .tag { background: #e0e7ff; color: var(--primary); padding: 4px 12px; border-radius: 6px; font-size: 13px; }
+    footer { background: white; border-top: 1px solid #e5e7eb; padding: 32px 0; margin-top: 64px; text-align: center; color: var(--text-light); }
+    @media (max-width: 768px) {
+      .article-content { padding: 24px; }
+      .article h1 { font-size: 28px; }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="/" class="logo">SEO-Master CMS</a>
+      <nav>
+        <a href="#features">Возможности</a>
+        <a href="/posts/1/">Как выбрать ключевые слова</a>
+        <a href="/posts/2/">SEO-оптимизация</a>
+        <a href="/posts/3/" class="active">Внутренняя оптимизация</a>
+        <a href="/admin/">В админку</a>
+      </nav>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="article-meta">
+      <span>📅 16 янв 2024</span>
+      <span>👁️ 756 просмотров</span>
+      <span>✍️ Елена Смирнова</span>
+    </div>
+    <h1>Внутренняя оптимизация сайта: чек-лист для успешного SEO</h1>
+    
+    <div class="article-content">
+      <p>Внутренняя оптимизация — это работы, которые проводятся непосредственно на сайте. Правильно выполненная внутренняя оптимизация может значительно улучшить позиции вашего сайта в поисковой выдаче.</p>
+
+      <div class="checklist">
+        <h3 style="margin-top: 0; margin-bottom: 16px;">📋 Чек-лист внутренней оптимизации</h3>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Уникальный и качественный контент на каждой странице</span>
+        </div>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Оптимизированные мета-теги Title (50-60 символов)</span>
+        </div>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Мета-теги Description (140-155 символов)</span>
+        </div>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Человекопонятные URL-адреса (slug)</span>
+        </div>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Единственный тег H1 на странице</span>
+        </div>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Структурная иерархия заголовков H2-H6</span>
+        </div>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Alt-тексты для всех изображений</span>
+        </div>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Внутренняя перелинковка страниц</span>
+        </div>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Файл robots.txt настроен правильно</span>
+        </div>
+        <div class="checklist-item">
+          <span class="check-icon">✓</span>
+          <span>Файл sitemap.xml сформирован</span>
+        </div>
+      </div>
+
+      <h2>Структура URL</h2>
+      <p>URL-адреса должны быть:</p>
+      <ul>
+        <li>Короткими и понятными</li>
+        <li>Содержать ключевые слова</li>
+        <li>Использовать дефисы вместо подчёркиваний</li>
+        <li>Без лишних параметров и чисел</li>
+      </ul>
+
+      <h2>Мета-теги</h2>
+      <p>Title — заголовок страницы, который видит пользователь в поиске. Он должен:</p>
+      <ul>
+        <li>Содержать главное ключевое слово</li>
+        <li>Быть длиной 50-60 символов</li>
+        <li>Быть привлекательным для клика</li>
+        <li>Быть уникальным для каждой страницы</li>
+      </ul>
+
+      <h2>Контент</h2>
+      <p>Качественный контент — основа успешного SEO. Пишите для людей, а не для поисковиков:</p>
+      <ol>
+        <li>Используйте ключевые слова естественно</li>
+        <li>Пишите подробные и полезные статьи (1500+ слов)</li>
+        <li>Добавляйте изображения и видео</li>
+        <li>Обновляйте устаревший контент</li>
+        <li>Используйте списки и таблицы для удобства чтения</li>
+      </ol>
+
+      <h2>Заключение</h2>
+      <p>Регулярно проверяйте свой сайт по этому чек-листу и устраняйте найденные проблемы. Внутренняя оптимизация — это фундамент, на котором строится успешное продвижение в поисковых системах.</p>
+
+      <div class="tags">
+        <span class="tag">внутренняя оптимизация</span>
+        <span class="tag">чек-лист</span>
+        <span class="tag">on-page seo</span>
+        <span class="tag">мета-теги</span>
+        <span class="tag">контент</span>
+      </div>
+    </div>
+  </article>
+
+  <footer>
+    <p>© 2024 SEO-Master CMS. Все права защищены.</p>
+  </footer>
+</body>
+</html>

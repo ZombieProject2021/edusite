@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки — EduCMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f5f7fa;
+            color: #1a1a2e;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo span {
+            font-size: 28px;
+            color: #4ade80;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 0 20px;
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .nav-link.active {
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+            border-left-color: #4ade80;
+        }
+
+        .nav-link span {
+            font-size: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .mobile-header {
+            display: none;
+            background: #fff;
+            padding: 16px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .mobile-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-decoration: none;
+        }
+
+        .mobile-logo span {
+            color: #4ade80;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle span {
+            font-size: 28px;
+            color: #1a1a2e;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        .breadcrumb a {
+            color: #4ade80;
+            text-decoration: none;
+        }
+
+        .breadcrumb span {
+            font-size: 16px;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .settings-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .settings-card.full-width {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 1024px) {
+            .settings-card.full-width {
+                grid-column: span 1;
+            }
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-header-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-header-icon span {
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .card-header-icon.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .card-header-icon.green {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+        }
+
+        .card-header-icon.orange {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        }
+
+        .card-header-icon.purple {
+            background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4ade80;
+            box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.1);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .checkbox-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #4ade80;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .form-actions {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            .mobile-header {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 80px 16px 20px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="mobile-header">
+        <div class="mobile-header-content">
+            <a href="/admin" class="mobile-logo">
+                <span class="material-icons-outlined">school</span>
+                EduCMS
+            </a>
+            <button class="menu-toggle" id="mobileMenuToggle">
+                <span class="material-icons-outlined">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="/admin" class="sidebar-logo">
+                <span class="material-icons-outlined">school</span>
+                EduCMS
+            </a>
+            <div class="sidebar-subtitle">Панель управления</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Основное</div>
+                <a href="/admin" class="nav-link">
+                    <span class="material-icons-outlined">dashboard</span>
+                    Дашборд
+                </a>
+                <a href="/admin/courses/" class="nav-link">
+                    <span class="material-icons-outlined">auto_stories</span>
+                    Курсы
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Контент</div>
+                <a href="/admin/pages/" class="nav-link">
+                    <span class="material-icons-outlined">article</span>
+                    Страницы
+                </a>
+                <a href="/admin/news/" class="nav-link">
+                    <span class="material-icons-outlined">newspaper</span>
+                    Новости
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Система</div>
+                <a href="/admin/settings/" class="nav-link active">
+                    <span class="material-icons-outlined">settings</span>
+                    Настройки
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1 class="page-title">Настройки</h1>
+                <div class="breadcrumb">
+                    <a href="/admin">Главная</a>
+                    <span class="material-icons-outlined">chevron_right</span>
+                    <span>Настройки</span>
+                </div>
+            </div>
+        </header>
+
+        <div id="alertSuccess" class="alert alert-success">Настройки успешно сохранены!</div>
+        <div id="alertError" class="alert alert-error">Произошла ошибка при сохранении.</div>
+
+        <form id="settingsForm">
+            <div class="settings-grid">
+                <!-- Общие настройки -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-header-icon blue">
+                            <span class="material-icons-outlined">public</span>
+                        </div>
+                        <h3 class="card-title">Общие настройки</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label" for="siteName">Название сайта</label>
+                            <input type="text" id="siteName" name="site_name" class="form-input" placeholder="Учебный центр ПРОФОБУЧЕНИЕ">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="siteDescription">Описание сайта (SEO)</label>
+                            <textarea id="siteDescription" name="site_description" class="form-input" placeholder="Краткое описание для поисковых систем..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Контактная информация -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-header-icon green">
+                            <span class="material-icons-outlined">contact_mail</span>
+                        </div>
+                        <h3 class="card-title">Контактная информация</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label" for="contactPhone">Телефон</label>
+                            <input type="text" id="contactPhone" name="contact_phone" class="form-input" placeholder="8 (800) 444-80-89">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" name="contact_email" class="form-input" placeholder="info@profobuchenie.ru">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contactAddress">Адрес</label>
+                            <input type="text" id="contactAddress" name="contact_address" class="form-input" placeholder="г. Москва, ул. Примерная, д. 1">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Настройки форм -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-header-icon orange">
+                            <span class="material-icons-outlined">assignment</span>
+                        </div>
+                        <h3 class="card-title">Настройки форм</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label" for="formEmail">Email для заявок</label>
+                            <input type="email" id="formEmail" name="form_email" class="form-input" placeholder="orders@profobuchenie.ru">
+                            <div class="form-hint">Заявки с сайта будут отправляться на этот адрес</div>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="formNotify" name="form_notify" checked>
+                            <label for="formNotify">Отправлять уведомления о новых заявках</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Социальные сети -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-header-icon purple">
+                            <span class="material-icons-outlined">share</span>
+                        </div>
+                        <h3 class="card-title">Социальные сети</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label" for="socialVk">ВКонтакте</label>
+                            <input type="url" id="socialVk" name="social_vk" class="form-input" placeholder="https://vk.com/...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="socialTg">Telegram</label>
+                            <input type="url" id="socialTg" name="social_tg" class="form-input" placeholder="https://t.me/...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Дополнительные настройки -->
+                <div class="settings-card full-width">
+                    <div class="card-header">
+                        <div class="card-header-icon blue">
+                            <span class="material-icons-outlined">tune</span>
+                        </div>
+                        <h3 class="card-title">Дополнительные настройки</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="enableReviews" name="enable_reviews" checked>
+                                <label for="enableReviews">Разрешить отзывы</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="enableSearch" name="enable_search" checked>
+                                <label for="enableSearch">Включить поиск по сайту</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="enableCatalog" name="enable_catalog" checked>
+                                <label for="enableCatalog">Показывать каталог курсов</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="maintenanceMode" name="maintenance_mode">
+                                <label for="maintenanceMode">Режим обслуживания</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <span class="material-icons-outlined">save</span>
+                    Сохранить настройки
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <script src="../../js/store-api.js"></script>
+    <script>
+        // Configure API URL for server
+        window.__API_URL__ = 'http://172.17.140.100:5000/api';
+        const api = new StoreAPI();
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const form = document.getElementById('settingsForm');
+
+            // Load settings from API
+            try {
+                const settings = await api.getSettings();
+
+                // Map API field names to form field names
+                const fieldMapping = {
+                    'site_name': 'site_name',
+                    'site_description': 'site_description',
+                    'phone': 'contact_phone',
+                    'email': 'contact_email',
+                    'address': 'contact_address',
+                    'working_hours': 'working_hours',
+                    'vk_link': 'social_vk',
+                    'telegram_link': 'social_tg',
+                    'copyright_text': 'copyright_text'
+                };
+
+                // Populate form fields
+                for (const [apiKey, formKey] of Object.entries(fieldMapping)) {
+                    const field = document.querySelector(`[name="${formKey}"]`);
+                    if (field && settings[apiKey]) {
+                        field.value = settings[apiKey];
+                    }
+                }
+            } catch (err) {
+                console.error('Error loading settings:', err);
+            }
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const settings = {};
+
+                // Collect form data
+                const formData = new FormData(form);
+                for (const [key, value] of formData.entries()) {
+                    settings[key] = value;
+                }
+
+                // Handle checkboxes
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    settings[checkbox.name] = checkbox.checked;
+                });
+
+                // Map form names to API names
+                const apiSettings = {
+                    site_name: settings.site_name || '',
+                    site_description: settings.site_description || '',
+                    phone: settings.contact_phone || '',
+                    email: settings.contact_email || '',
+                    address: settings.contact_address || '',
+                    working_hours: settings.working_hours || '',
+                    vk_link: settings.social_vk || '',
+                    telegram_link: settings.social_tg || '',
+                    copyright_text: settings.copyright_text || ''
+                };
+
+                try {
+                    await api.updateSettings(apiSettings);
+                    document.getElementById('alertSuccess').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('alertSuccess').style.display = 'none';
+                    }, 3000);
+                } catch (err) {
+                    console.error('Error saving settings:', err);
+                    document.getElementById('alertError').style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
